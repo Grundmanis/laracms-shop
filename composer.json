@@ -1,0 +1,32 @@
+{
+    "name": "grundmanis/laracms-shop",
+    "description": "Laracms shop module",
+    "keywords": ["laravel", "cms", "admin", "dashboard", "panel", "content", "module", "shop"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Armand Grundmanis",
+            "email": "agrundmanis@inbox.lv"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "grundmanis/laracms": "@dev",
+        "cviebrock/eloquent-sluggable": "^4.5",
+        "gloudemans/shoppingcart": "^2.5",
+        "dimsav/laravel-translatable": ">=8.0"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Grundmanis\\Laracms\\Modules\\Shop\\Providers\\ShopProvider",
+                "Dimsav\\Translatable\\TranslatableServiceProvider"
+            ]
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Grundmanis\\Laracms\\Modules\\Shop\\": "src/"
+        }
+    }
+}
