@@ -18,6 +18,7 @@
             </thead>
             <tbody>
             @foreach($reviews as $review)
+                @continue(!$review->reviewable)
                 <tr>
                     <td>{{ $review->id }}</td>
                     <td>{{ $review->text }}</td>
