@@ -15,19 +15,12 @@ class SellerController extends Controller
     private $user;
 
     /**
-     * @var ProfileController
-     */
-    private $profileController;
-
-    /**
      * SellerController constructor.
      * @param User $user
-     * @param ProfileController $profileController
      */
-    public function __construct(User $user, ProfileController $profileController)
+    public function __construct(User $user)
     {
         $this->user = $user;
-        $this->profileController = $profileController;
     }
 
     /**
