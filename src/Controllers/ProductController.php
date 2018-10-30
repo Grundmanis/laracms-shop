@@ -91,6 +91,12 @@ class ProductController extends Controller
                 ->with('product')
                 ->take(5)
                 ->get();
+
+            Auth::user()
+                ->productsSeen()
+                ->firstOrCreate([
+                    'product_id' => $product->id
+                ]);
         }
 
         return view('product', compact('product', 'templates', 'youSaw', 'mark', 'shopMark', 'reviews', 'shopReviews', 'similarProducts', 'inOtherShops', 'shopOwner'));
