@@ -103,26 +103,31 @@ class ShopController extends Controller
 
         if ($request->delivery) {
             $shop->deliveries()->delete();
-            $shop->deliveries()->create([
-                'delivery' => $request->delivery,
-                'shop_id'  => $shop->id
-            ]);
+            $data = [];
+            foreach ($request->delivery as $delivery => $deliveryData)  {
+                if ($deliveryData['price'] != null) {
+                    $data[] = [
+                        'delivery' => $delivery,
+                        'price'    => $deliveryData['price'] ?? 0,
+                        'shop_id'  => $shop->id
+                    ];
+                }
+            }
+            $shop->deliveries()->createMany($data);
         }
 
         if ($request->payment) {
             $shop->payments()->delete();
-            $shop->payments()->create([
-                'payment' => $request->payment,
-                'shop_id' => $shop->id
-            ]);
+            $data = [];
+            foreach ($request->payment as $payment => $value)  {
+                $data[] = [
+                    'payment' => $payment,
+                    'shop_id' => $shop->id
+                ];
+            }
+            $shop->payments()->createMany($data);
         }
 
-        if ($request->work_time) {
-            $shop->worktime()->delete();
-            $shop->worktime()->create([
-                'work_time' => json_encode($request->work_time)
-            ]);
-        }
         $shop->worktime()->update([
             'work_time' => json_encode($request->work_time)
         ]);

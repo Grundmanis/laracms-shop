@@ -27,7 +27,6 @@ class ShopUpdateRequest extends FormRequest
         $uniqueName = $this->shop ? ',' . $this->shop->id : '';
         $logo = [];
 
-
         if ($this->logo) {
             $logo = ['logo' => 'image|dimensions:max_width=300,max_height=300'];
         }

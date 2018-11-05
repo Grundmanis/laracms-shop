@@ -12,8 +12,7 @@ use Gloudemans\Shoppingcart\Facades\Cart;
  */
 class Product extends Model
 {
-
-    const PER_PAGE = 10;
+    const PER_PAGE = 12;
 
     protected $fillable = [
         'delivery_cost_riga',
@@ -45,7 +44,8 @@ class Product extends Model
         'discount_price',
         'shop_id',
         'id_from_shop',
-        'description'
+        'description',
+        'delete_product'
     ];
 
     /**
