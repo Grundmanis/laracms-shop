@@ -20,7 +20,7 @@ class CreateLaracmsShopFieldsTable extends Migration
 
         Schema::create('laracms_shop_field_values', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('value');
+            $table->string('value')->nullable();
             $table->integer('shop_id')->unsigned();
             $table->integer('laracms_shop_field')->unsigned();
             $table->timestamps();

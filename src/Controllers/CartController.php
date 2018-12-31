@@ -21,7 +21,7 @@ class CartController extends Controller
      */
     public function __construct(Cart $cart)
     {
-        $this->cart = $cart;
+        $this->cart = $cart->instance('shoppingcart');
     }
 
     /**
@@ -29,13 +29,25 @@ class CartController extends Controller
      */
     public function index()
     {
-        if (!\Gloudemans\Shoppingcart\Facades\Cart::content()->count()) {
-            return redirect()->route('home');
+        $cartData = $this->cart->content();
+        $cart = [];
+
+        foreach ($cartData as $product) {
+            if (!isset($cart[$product->options->shop])) {
+                $cart[$product->options->shop] = [];
+                $cart[$product->options->shop]['products'] = [];
+                $cart[$product->options->shop]['price'] = 0;
+            }
+            $cart[$product->options->shop]['products'][] = $product;
+            $cart[$product->options->shop]['price'] += $product->price * $product->qty;
         }
 
         $user = Auth::user();
 
-        return view('cart', compact('user'));
+        return view('cart', [
+            'user' => $user,
+            'cart' => $cart
+        ]);
     }
 
     /**
@@ -44,19 +56,25 @@ class CartController extends Controller
      */
     public function add(Product $product, Request $request)
     {
-        $this->cart->add(
+        $this->cart->instance('shoppingcart')->restore(Auth::user()->email);
+
+        $cart = $this->cart->instance('shoppingcart');
+
+        $cart->add(
             $product->id,
             $product->name,
             $request->qty ?: 1,
             $product->price,
             [
                 'item' => $product,
-                'shop' => $product->shop->slug,
+                'shop' => $product->shop->id,
                 'shopName' => $product->shop->name,
                 'shopLogo' => $product->shop->logo,
                 'image' => $product->image
             ]
         );
+
+        $cart->store(Auth::user()->email);
 
         return redirect()->route('cart')->with('status', __('texts.product_added_to_cart'));
     }
@@ -67,7 +85,13 @@ class CartController extends Controller
      */
     public function remove($id)
     {
-        $this->cart->remove($id);
+        $this->cart->instance('shoppingcart')->restore(Auth::user()->email);
+
+        $cart = $this->cart->instance('shoppingcart');
+
+        $cart->remove($id);
+
+        $cart->store(Auth::user()->email);
 
         return redirect()->back();
     }
@@ -79,7 +103,11 @@ class CartController extends Controller
      */
     public function update(string $id, Request $request)
     {
-        $this->cart->update($id, $request->qty);
+        $this->cart->instance('shoppingcart')->restore(Auth::user()->email);
+
+        $this->cart->instance('shoppingcart')->update($id, $request->qty);
+
+        $this->cart->instance('shoppingcart')->store(Auth::user()->email);
 
         return redirect()->back();
     }

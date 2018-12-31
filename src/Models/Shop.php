@@ -138,4 +138,12 @@ class Shop extends Model
 
         return $find->count();
     }
+
+    /**
+     * @return string
+     */
+    public function getLink()
+    {
+        return route('shop', $this->slug);
+    }
 }

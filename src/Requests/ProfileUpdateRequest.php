@@ -33,9 +33,9 @@ class ProfileUpdateRequest extends FormRequest
         }
 
         $user = Auth::user();
+
         $data = [
             'avatar' => 'image|dimensions:max_width=300,max_height=300|mimes:jpeg,gif,png',
-            'first_name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,' . $user->id
         ];
 

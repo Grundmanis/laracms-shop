@@ -43,12 +43,18 @@ class ProductController extends Controller
 
     /**
      * @param string $shopSlug
-     * @param Product $product
+     * @param int $productId
      * @param string $name
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function show(string $shopSlug, Product $product, string $name)
+    public function show(string $shopSlug, int $productId, string $name)
     {
+        $product = Product::find($productId);
+
+        if (!$product) {
+            abort(404);
+        }
+
         if (Auth::check()) {
             $product->seen()->firstOrCreate([
                 'user_id' => Auth::user()->id
@@ -138,7 +144,14 @@ class ProductController extends Controller
     public function send(string $shopSlug, Product $product, string $name, Request $request)
     {
         $shop = $product->shop;
-        $shopOwner = $shop->user;
+        $message = $request->message;
+
+        $shop->conversations()->create([
+            'shop_id' => $shop->id,
+            'receiver_id' => $shop->user->id,
+            'sender_id' => Auth::user()->id,
+            'message' => $message
+        ]);
 
         return redirect()
             ->back()

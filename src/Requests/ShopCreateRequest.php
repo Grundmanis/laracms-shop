@@ -14,7 +14,7 @@ class ShopCreateRequest extends FormRequest
      */
     public function authorize()
     {
-        return Auth::check() && Auth::user()->seller;
+        return Auth::check();
     }
 
     /**
@@ -32,7 +32,7 @@ class ShopCreateRequest extends FormRequest
             'phone' => 'required|numeric',
             'email' => 'required|email',
             'address' => 'required',
-            'logo' => 'image|dimensions:max_width=300,max_height=300',
+            'logo' => 'image|dimensions:width=150,height=50',
         ];
     }
 }

@@ -7,7 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Conversation extends Model
 {
-    protected $fillable = ['receiver_id', 'sender_id', 'shop_id', 'message', 'subject'];
+    protected $fillable = [
+        'receiver_id',
+        'sender_id',
+        'shop_id',
+        'message',
+        'subject'
+    ];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
