@@ -5,8 +5,10 @@ namespace Grundmanis\Laracms\Modules\Shop\Controllers;
 use Gloudemans\Shoppingcart\Cart;
 use App\Http\Controllers\Controller;
 use Grundmanis\Laracms\Modules\Shop\Models\Product;
+use Grundmanis\Laracms\Modules\Shop\Models\Shop;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class CartController extends Controller
 {
@@ -37,6 +39,7 @@ class CartController extends Controller
                 $cart[$product->options->shop] = [];
                 $cart[$product->options->shop]['products'] = [];
                 $cart[$product->options->shop]['price'] = 0;
+                $cart[$product->options->shop]['shop'] = Shop::find($product->options->shop);
             }
             $cart[$product->options->shop]['products'][] = $product;
             $cart[$product->options->shop]['price'] += $product->price * $product->qty;
@@ -56,7 +59,11 @@ class CartController extends Controller
      */
     public function add(Product $product, Request $request)
     {
-        $this->cart->instance('shoppingcart')->restore(Auth::user()->email);
+        $identifier = Auth::user()->email . '_shoppingcart';
+        DB::table(config('cart.database.table'))->where([
+            ['identifier', $identifier],
+            ['instance', 'shoppingcart']
+        ])->delete();
 
         $cart = $this->cart->instance('shoppingcart');
 
@@ -74,7 +81,7 @@ class CartController extends Controller
             ]
         );
 
-        $cart->store(Auth::user()->email);
+        $cart->store($identifier);
 
         return redirect()->route('cart')->with('status', __('texts.product_added_to_cart'));
     }
@@ -85,13 +92,15 @@ class CartController extends Controller
      */
     public function remove($id)
     {
-        $this->cart->instance('shoppingcart')->restore(Auth::user()->email);
+        $identifier = Auth::user()->email . '_shoppingcart';
+        DB::table(config('cart.database.table'))->where([
+            ['identifier', $identifier],
+            ['instance', 'shoppingcart']
+        ])->delete();
 
-        $cart = $this->cart->instance('shoppingcart');
-
-        $cart->remove($id);
-
-        $cart->store(Auth::user()->email);
+        $shoppingcart = $this->cart->instance('shoppingcart');
+        $shoppingcart->remove($id);
+        $shoppingcart->store($identifier);
 
         return redirect()->back();
     }
@@ -103,11 +112,16 @@ class CartController extends Controller
      */
     public function update(string $id, Request $request)
     {
-        $this->cart->instance('shoppingcart')->restore(Auth::user()->email);
+        $identifier = Auth::user()->email . '_shoppingcart';
+
+        DB::table(config('cart.database.table'))->where([
+            ['identifier', $identifier],
+            ['instance', 'shoppingcart']
+        ])->delete();
 
         $this->cart->instance('shoppingcart')->update($id, $request->qty);
 
-        $this->cart->instance('shoppingcart')->store(Auth::user()->email);
+        $this->cart->instance('shoppingcart')->store($identifier);
 
         return redirect()->back();
     }

@@ -15,7 +15,7 @@
     <label for="logo" class="col-md-4 col-form-label text-md-right">{{ __('form.logo') }} <span></span></label>
     <div class="col-md-6">
         @if (isset($shop))
-            <img src="{{ asset('logos/' . $shop->logo) }}" alt="">
+            <img src="{{ $shop->logo }}" alt="">
         @endif
         <input id="logo"
                type="file"

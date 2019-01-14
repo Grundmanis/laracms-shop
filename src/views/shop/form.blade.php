@@ -4,7 +4,7 @@
     <form enctype="multipart/form-data" method="POST">
         @csrf
 
-        <div class="row">
+        <div class="row no-styled-checkboxes">
             <div class="col-md-6">
                 <h3>Info</h3>
                 <div class="form-group row">
@@ -12,7 +12,7 @@
 
                     <div class="col-md-6">
                         <input id="blocked" type="checkbox" name="blocked" value="1" @if($shop->blocked ?: old('blocked')) checked @endif autofocus>
-                        <input type="text" name="blocked_reason" value="{{ $shop->blocked ? $shop->blocked->reason : old('blocked_reason') }}">
+                        <input class="form-control" placeholder="{{ __('form.block_reason') }}" type="text" name="blocked_reason" value="{{ $shop->blocked ? $shop->blocked->reason : old('blocked_reason') }}">
                     </div>
                 </div>
 
@@ -33,7 +33,7 @@
 
                     </div>
                 </div>
-                @include('partials.shop.info')
+                @include('partials.shop.info', ['admin' => true])
             </div>
             <div class="col-md-6">
                 <h3>Delivery</h3>
@@ -45,7 +45,7 @@
         <div class="row">
             <div class="col-md-7">
                 <h3>Worktime</h3>
-                @include('partials.shop.worktime')
+                @include('shop.partials.worktime')
                 <div class="form-group row mb-0">
                     <div class="col-md-6 offset-md-4">
                         <button type="submit" class="btn btn-primary">

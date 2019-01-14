@@ -5,12 +5,11 @@ namespace Grundmanis\Laracms\Modules\Shop\Controllers;
 use App\Http\Controllers\Controller;
 use Grundmanis\Laracms\Modules\Shop\Models\Product;
 use Grundmanis\Laracms\Modules\Shop\Models\Shop;
-use App\User;
+use Grundmanis\Laracms\Modules\Shop\Models\ShopFieldValue;
 use Illuminate\Http\Request;
 
 class ShopController extends Controller
 {
-
     /**
      * @var Shop
      */
@@ -22,16 +21,23 @@ class ShopController extends Controller
     private $product;
 
     /**
+     * @var ShopFieldValue
+     */
+    private $fieldValue;
+
+    /**
      * SellerController constructor.
      * @param Shop $shop
      * @param Product $product
+     * @param ShopFieldValue $fieldValue
      * @internal param User $user
      * @internal param ProfileController $profileController
      */
-    public function __construct(Shop $shop, Product $product)
+    public function __construct(Shop $shop, Product $product, ShopFieldValue $fieldValue)
     {
         $this->shop = $shop;
         $this->product = $product;
+        $this->fieldValue = $fieldValue;
     }
 
     /**
@@ -67,7 +73,12 @@ class ShopController extends Controller
      */
     public function edit(Shop $shop)
     {
-        return view('laracms.shop::shop.form', compact('shop'));
+        $deliveries = $shop->deliveries->keyBy('delivery');
+        $payments = $shop->payments->keyBy('payment');
+        $worktime = $shop->worktime;
+        $fieldValues = $shop->fieldValues->keyBy('laracms_shop_field');
+
+        return view('laracms.shop::shop.form', compact('shop', 'deliveries', 'payments', 'worktime', 'fieldValues'));
     }
 
     /**
@@ -128,9 +139,23 @@ class ShopController extends Controller
             $shop->payments()->createMany($data);
         }
 
-        $shop->worktime()->update([
-            'work_time' => json_encode($request->work_time)
-        ]);
+        if ($request->work_time) {
+            $shop->worktime()->delete();
+            $shop->worktime()->create([
+                'work_time' => json_encode($request->work_time)
+            ]);
+        }
+
+        if ($fields = $request->fields) {
+            foreach ($fields as $fieldId => $value) {
+                $field = $this->fieldValue->firstOrNew([
+                    'shop_id'            => $shop->id,
+                    'laracms_shop_field' => $fieldId
+                ]);
+                $field->value = $value;
+                $field->save();
+            }
+        }
 
         if ($request->blocked) {
             $shop->blocked()->create([
@@ -144,14 +169,15 @@ class ShopController extends Controller
     }
 
     /**
-     * @param User $user
+     * @param Shop $shop
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(User $user)
+    public function destroy(Shop $shop)
     {
-        $user->delete();
+        $shop->products()->delete();
+        $shop->delete();
 
-        return redirect()->route('laracms.shops')->with('status', 'Seller deleted!');
+        return redirect()->route('laracms.shops')->with('status', 'Shop deleted!');
     }
 
     /**

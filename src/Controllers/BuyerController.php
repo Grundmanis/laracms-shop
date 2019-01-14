@@ -29,17 +29,17 @@ class BuyerController extends Controller
      */
     public function index(Request $request)
     {
-        $buyers = $this->user->where('seller', '!=', 1);
+        $customers = $this->user->where('seller', '!=', 1);
 
         if ($request->q) {
-            $buyers = $buyers
+            $customers = $customers
                 ->where('email', 'LIKE', '%'. $request->q .'%')
                 ->orWhere('first_name', 'LIKE', '%'. $request->q .'%')
                 ->orWhere('last_name', 'LIKE', '%'. $request->q .'%')
             ;
         }
         return view('laracms.shop::buyer.index', [
-            'buyers' => $buyers->paginate(10)
+            'customers' => $customers->paginate(10)
         ]);
     }
 
@@ -59,7 +59,7 @@ class BuyerController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        $password = [];
+        $password = $company = [];
 
         if ($request->password) {
             $password = [
@@ -68,18 +68,38 @@ class BuyerController extends Controller
         }
 
         if ($request->avatar) {
-            $photoName = time().'.'.$request->avatar->getClientOriginalExtension();
+            $photoName = time() . '.' . $request->avatar->getClientOriginalExtension();
             $request->avatar->move(public_path('avatars'), $photoName);
         }
 
+        if ($request->company) {
+            $company = [
+                'company'       => $request->company,
+                'reg_number'    => $request->reg_number,
+                'vat_number'    => $request->vat_number,
+                'legal_address' => $request->legal_address,
+                'company_city'  => $request->company_city,
+                'bank'          => $request->bank,
+                'bank_number'   => $request->bank_number
+            ];
+        }
+
         $data = [
-            'avatar' => isset($photoName) ? asset('avatars/' . $photoName) : '',
+            'avatar'     => isset($photoName) ? asset('avatars/' . $photoName) : $user->avatar,
             'first_name' => $request->first_name,
-            'last_name' => $request->last_name,
-            'email' => $request->email
+            'full_name'  => $request->full_name,
+            'last_name'  => $request->last_name,
+            'email'      => $request->email,
+            'phone'      => $request->phone,
+            'address'    => $request->address,
+            'city'       => $request->city,
+            'birthday'   => $request->birthday,
+            'nameday'    => $request->nameday,
+            'delivery'   => $request->delivery,
+            'payment'    => $request->payment
         ];
 
-        $user->update($data + $password);
+        $user->update($data + $password + $company);
 
         if ($request->blocked) {
             $user->blocked()->create([
@@ -100,6 +120,6 @@ class BuyerController extends Controller
     {
         $user->delete();
 
-        return redirect()->route('laracms.buyers')->with('status', 'Buyer deleted!');
+        return redirect()->route('laracms.customers')->with('status', 'Buyer deleted!');
     }
 }

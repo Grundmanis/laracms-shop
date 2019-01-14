@@ -32,4 +32,25 @@ class OrderItem extends Model
     {
         return $value ? json_decode($value) : null;
     }
+
+    /**
+     * @param $value
+     * @return false|string
+     */
+    public function getCreatedAtAttribute($value)
+    {
+        return date('H:i:s d-m-Y', strtotime($value));
+    }
+
+    public function getDeliveryPriceAttribute()
+    {
+        if ($this->info->delivery) {
+            if ($deliveryPrice = $this->product->shop->deliveries->where('delivery', $this->info->delivery)->first())
+            {
+                return $deliveryPrice->price;
+            }
+        }
+
+        return '';
+    }
 }

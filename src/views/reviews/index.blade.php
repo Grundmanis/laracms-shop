@@ -23,8 +23,8 @@
                     <td>{{ $review->id }}</td>
                     <td>{{ $review->text }}</td>
                     <td>
-                        <a href="{{ route('laracms.sellers.edit', $review->user_id) }}">
-                            {{ $review->user->fullName }}
+                        <a href="{{ route('laracms.customers.edit', $review->user_id) }}">
+                            {{ $review->user->full_name }}
                         </a>
                     </td>
                     <td>

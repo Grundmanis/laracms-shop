@@ -33,5 +33,13 @@ class Review extends Model
     {
         return $this->hasMany(ReviewImage::class);
     }
-
+    
+    /**
+     * @param $value
+     * @return false|string
+     */
+    public function getCreatedAtAttribute($value)
+    {
+        return date('H:i:s d-m-Y', strtotime($value));
+    }
 }

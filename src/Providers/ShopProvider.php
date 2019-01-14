@@ -2,9 +2,6 @@
 
 namespace Grundmanis\Laracms\Modules\Shop\Providers;
 
-use Grundmanis\Laracms\Modules\Pages\Exception\Handler;
-use Illuminate\Contracts\Debug\ExceptionHandler;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\ServiceProvider;
 use Grundmanis\Laracms\Facades\MenuFacade;
 
@@ -42,13 +39,12 @@ class ShopProvider extends ServiceProvider
     private function addMenuRoutes()
     {
         $menu = [
-            'Sellers' => 'laracms.sellers',
-            'Buyers' => 'laracms.buyers',
-            'Shops' => 'laracms.shops',
-            'Orders' => 'laracms.orders',
-            'Reviews' => 'laracms.reviews',
-            'Categories' => 'laracms.categories',
-            'Shop Fields' => 'laracms.fields'
+            'admin.menu.customers' => 'laracms.customers',
+            'admin.menu.shops' => 'laracms.shops',
+            'admin.menu.orders' => 'laracms.orders',
+            'admin.menu.reviews' => 'laracms.reviews',
+            'admin.menu.categories' => 'laracms.categories',
+            'admin.menu.shop-fields' => 'laracms.fields'
         ];
 
         MenuFacade::addMenu($menu);

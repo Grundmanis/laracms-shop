@@ -23,12 +23,23 @@ class ReviewController extends Controller
     }
 
     /**
+     * @param Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function index()
+    public function index(Request $request)
     {
+        $reviews = $this->review;
+
+        if ($request->q) {
+            $reviews = $reviews
+                ->where('text', 'LIKE', '%' . $request->q . '%')
+            ;
+        }
+
+        $reviews = $reviews->paginate(25);
+
         return view('laracms.shop::reviews.index', [
-            'reviews' => $this->review->paginate(25)
+            'reviews' => $reviews
         ]);
     }
 
@@ -40,7 +51,7 @@ class ReviewController extends Controller
     {
         $review->delete();
 
-        return redirect()->route('laracms.reviews')->with('status', 'Review deleted!');
+        return redirect()->back()->with('status', 'Review deleted!');
     }
 
 

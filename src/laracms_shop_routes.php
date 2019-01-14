@@ -5,15 +5,10 @@ Route::group([
     'namespace'  => 'Grundmanis\Laracms\Modules\Shop\Controllers',
     'prefix'     => 'laracms/'
 ], function () {
-    Route::get('sellers', 'SellerController@index')->name('laracms.sellers');
-    Route::get('sellers/edit/{user}', 'SellerController@edit')->name('laracms.sellers.edit');
-    Route::post('sellers/edit/{user}', 'SellerController@update');
-    Route::get('sellers/destroy/{user}', 'SellerController@destroy')->name('laracms.sellers.destroy');
-
-    Route::get('buyers', 'BuyerController@index')->name('laracms.buyers');
-    Route::get('buyers/edit/{user}', 'BuyerController@edit')->name('laracms.buyers.edit');
-    Route::post('buyers/edit/{user}', 'BuyerController@update');
-    Route::get('buyers/destroy/{user}', 'BuyerController@destroy')->name('laracms.buyers.destroy');
+    Route::get('customers', 'BuyerController@index')->name('laracms.customers');
+    Route::get('customers/edit/{user}', 'BuyerController@edit')->name('laracms.customers.edit');
+    Route::post('customers/edit/{user}', 'BuyerController@update');
+    Route::get('customers/destroy/{user}', 'BuyerController@destroy')->name('laracms.customers.destroy');
 
     Route::get('shops', 'ShopController@index')->name('laracms.shops');
     Route::get('shops/{shop}/products', 'ShopController@products')->name('laracms.shops.products');

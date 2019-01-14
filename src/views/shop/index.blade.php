@@ -25,7 +25,7 @@
                     <td>{{ $shop->blocked ? 'Yes' : 'No' }}</td>
                     <td>{{ $shop->sandbox ? 'Yes' : 'No' }}</td>
                     <td>{{ $shop->name }}</td>
-                    <td><a href="{{ route('laracms.sellers.edit', $shop->user_id) }}">{{ $shop->user->fullName }}</a></td>
+                    <td><a href="{{ route('laracms.customers.edit', $shop->user_id) }}">{{ $shop->user->full_name }}</a></td>
                     <td>
                         <a href="{{ route('laracms.shops.products', $shop->id) }}">
                             {{ $shop->products()->count() }}

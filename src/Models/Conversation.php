@@ -38,4 +38,13 @@ class Conversation extends Model
     {
         return $this->belongsTo(Shop::class, 'shop_id');
     }
+    
+    /**
+     * @param $value
+     * @return false|string
+     */
+    public function getCreatedAtAttribute($value)
+    {
+        return date('H:i:s d-m-Y', strtotime($value));
+    }
 }

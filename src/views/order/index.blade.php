@@ -17,8 +17,8 @@
                     <tr>
                         <td>{{ $order->id }}</td>
                         <td>
-                            <a href="{{ route('laracms.buyers.edit', $order->user_id) }}">
-                                {{ $order->user->fullName }}
+                            <a href="{{ route('laracms.customers.edit', $order->user_id) }}">
+                                {{ $order->user->full_name }}
                             </a>
                         </td>
                         <td>{{ $order->amount }}</td>

@@ -51,6 +51,11 @@ class ProductController extends Controller
     {
         $product = Product::find($productId);
 
+//        if ($product->shop->sandbox || $product->shop->blocked->count())
+//        {
+//            abort(404);
+//        }
+
         if (!$product) {
             abort(404);
         }

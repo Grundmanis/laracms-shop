@@ -8,28 +8,29 @@
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>email</th>
-                    <th>first name</th>
-                    <th>created at</th>
+                    <th>E-mail</th>
+                    <th>Full name</th>
+                    <th>Created at</th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
-            @foreach($buyers as $buyer)
+            @foreach($customers as $customer)
                 <tr>
-                    <td>{{ $buyer->id }}</td>
-                    <td>{{ $buyer->email }}</td>
-                    <td>{{ $buyer->first_name }}</td>
+                    <td>{{ $customer->id }}</td>
+                    <td>{{ $customer->email }}</td>
+                    <td>{{ $customer->full_name }}</td>
+                    <td>{{ $customer->created_at }}</td>
                     <td>
-                        <a href="{{ route('laracms.buyers.edit', $buyer->id) }}">Edit</a>
+                        <a href="{{ route('laracms.customers.edit', $customer->id) }}">Edit</a>
                         |
                         <a onclick="return confirm('Are you sure?')"
-                           href="{{ route('laracms.buyers.destroy', $buyer->id) }}">Delete</a>
+                           href="{{ route('laracms.customers.destroy', $customer->id) }}">Delete</a>
                     </td>
                 </tr>
             @endforeach
             </tbody>
         </table>
-        {{ $buyers->links() }}
+        {{ $customers->links() }}
     </div>
 @endsection
