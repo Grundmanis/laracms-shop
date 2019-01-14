@@ -1,4 +1,4 @@
-@extends('laracms.dashboard::layouts.app')
+@extends('laracms.dashboard::layouts.app', ['page' => 'Reviews'])
 
 @section('styles')
 
@@ -22,36 +22,10 @@
             src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.25.0/codemirror.min.js"></script>
     <script type="text/javascript"
             src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.25.0/mode/xml/xml.min.js"></script>
-
-    <!-- Include Editor JS files. -->
-    <script type="text/javascript"
-            src="https://cdnjs.cloudflare.com/ajax/libs/froala-editor/2.7.3/js/froala_editor.pkgd.min.js"></script>
-
-    <script> $(function () {
-            $('textarea').froalaEditor()
-        }); </script>
 @endsection
 
 @section('content')
-
-    <nav class="navbar navbar-default">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar bar1"></span>
-                    <span class="icon-bar bar2"></span>
-                    <span class="icon-bar bar3"></span>
-                </button>
-                <a class="navbar-brand" href="#">Shops</a>
-            </div>
-            @include('laracms.dashboard::partials.topnav')
-        </div>
-    </nav>
-
-    <div class="content">
-        <div class="container-fluid">
-            <form enctype="multipart/form-data" method="POST">
+    <form enctype="multipart/form-data" method="POST">
                 @csrf
 
                 <div class="row">
@@ -60,9 +34,7 @@
                         <div class="form-group row">
                             <label for="text" class="col-md-4 col-form-label text-md-right">{{ __('form.text') }}</label>
                             <div class="col-md-6">
-                                <textarea name="text" id="" cols="30" rows="10" class="form-control">
-                                    {{ old('text', $review->text) }}
-                                </textarea>
+                                <textarea name="text" id="" cols="30" rows="10" class="form-control">{{ old('text', $review->text) }}</textarea>
                             </div>
                         </div>
                         <div class="form-group row mb-0">
@@ -76,6 +48,4 @@
                 </div>
 
             </form>
-        </div>
-    </div>
 @endsection
