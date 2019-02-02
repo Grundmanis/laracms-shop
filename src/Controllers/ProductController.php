@@ -87,8 +87,9 @@ class ProductController extends Controller
             ->where('shop_id', '!=', $product->shop_id)
             ->where(function($query) use ($product) {
                 $query
-                    ->where('model', 'like', '%' . $product->model . '%')
-                    ->orWhere('manufacturer', 'like', '%' . $product->manufacturer . '%');
+                    ->where('name', 'like', '%' . $product->name . '%');
+//                    ->where('model', 'like', '%' . $product->model . '%')
+//                    ->orWhere('manufacturer', 'like', '%' . $product->manufacturer . '%');
             })
             ->take(10)
             ->get();
@@ -132,8 +133,8 @@ class ProductController extends Controller
                 $name = time() . uniqid() . '.'.$image->getClientOriginalExtension();
                 $image->move(public_path('comments'), $name);
                 $names[] = [
-                  'url' => $name,
-                  'review_id' => $review->id
+                    'url' => $name,
+                    'review_id' => $review->id
                 ];
             }
             $review->images()->createMany($names);
