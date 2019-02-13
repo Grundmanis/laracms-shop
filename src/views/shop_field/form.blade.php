@@ -36,9 +36,7 @@
             @foreach($locales as $key => $locale)
                 <div class="tab-pane @if(!$key) active @endif" id="{{ $locale }}">
                     <div class="form-group">
-                        <textarea class="summernote" name="{{ $locale }}[name]">
-                            {{ formValue($field ?? null, 'name', $locale) }}
-                        </textarea>
+                        <input class="form-control" name="{{ $locale }}[name]" value="{{ formValue($field ?? null, 'name', $locale) }}">
                     </div>
                 </div>
             @endforeach

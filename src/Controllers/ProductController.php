@@ -133,8 +133,8 @@ class ProductController extends Controller
                 $name = time() . uniqid() . '.'.$image->getClientOriginalExtension();
                 $image->move(public_path('comments'), $name);
                 $names[] = [
-                    'url' => $name,
-                    'review_id' => $review->id
+                  'url' => $name,
+                  'review_id' => $review->id
                 ];
             }
             $review->images()->createMany($names);

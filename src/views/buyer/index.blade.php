@@ -10,6 +10,7 @@
                     <th>#</th>
                     <th>E-mail</th>
                     <th>Full name</th>
+                    <th>Login</th>
                     <th>Created at</th>
                     <th></th>
                 </tr>
@@ -20,6 +21,7 @@
                     <td>{{ $customer->id }}</td>
                     <td>{{ $customer->email }}</td>
                     <td>{{ $customer->full_name }}</td>
+                    <td>{{ $customer->first_name }}</td>
                     <td>{{ $customer->created_at }}</td>
                     <td>
                         <a href="{{ route('laracms.customers.edit', $customer->id) }}">Edit</a>
