@@ -4,6 +4,7 @@ namespace Grundmanis\Laracms\Modules\Shop\Controllers;
 
 use App\Http\Controllers\Controller;
 use Grundmanis\Laracms\Modules\Shop\Models\Product;
+use Grundmanis\Laracms\Modules\Shop\Models\Review;
 use Grundmanis\Laracms\Modules\Shop\Models\Shop;
 use Grundmanis\Laracms\Modules\Shop\Models\ShopFieldValue;
 use Illuminate\Http\Request;
@@ -174,8 +175,20 @@ class ShopController extends Controller
      */
     public function destroy(Shop $shop)
     {
-        $shop->products()->delete();
+        $shop->reviews()
+            ->delete();
+
+        $shop->products()
+            ->withoutGlobalScope('available')
+            ->delete();
+
         $shop->delete();
+
+        // delete from favorites
+
+        // delete products from favorites
+
+        // delete products from cart
 
         return redirect()->route('laracms.shops')->with('status', 'Shop deleted!');
     }

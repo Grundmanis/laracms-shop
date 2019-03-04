@@ -49,7 +49,7 @@ class ProductController extends Controller
      */
     public function show(string $shopSlug, int $productId, string $name)
     {
-        $product = Product::find($productId);
+        $product = Product::withoutGlobalScope('available')->find($productId);
 
 //        if ($product->shop->sandbox || $product->shop->blocked->count())
 //        {
@@ -80,7 +80,7 @@ class ProductController extends Controller
         $names = explode(' ', $product->name);
         $similarProducts = $this->product
             ->where('name', 'like', '%'. $names[0] .'%')
-            ->take(10)
+            ->take(5)
             ->get();
 
         $inOtherShops = $this->product
@@ -91,7 +91,7 @@ class ProductController extends Controller
 //                    ->where('model', 'like', '%' . $product->model . '%')
 //                    ->orWhere('manufacturer', 'like', '%' . $product->manufacturer . '%');
             })
-            ->take(10)
+            ->take(5)
             ->get();
 
         $templates = LaracmsMailTemplate::get();

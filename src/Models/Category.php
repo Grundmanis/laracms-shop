@@ -40,12 +40,14 @@ class Category extends Model
 
         return Product::where(function($query) use ($searches) {
                 foreach ($searches as $search) {
-                    $search = '%' . $search . '%';
                     $query
-                        ->orWhere('name', 'LIKE', $search)
-                        ->orWhere('category', 'LIKE', $search)
-                        ->orWhere('manufacturer', 'LIKE', $search)
-                        ->orWhere('model', 'LIKE', $search);
+                        ->where(function($subQuery) use ($search) {
+                            $subQuery
+                                ->where('name', 'LIKE', '%' . $search .'%')
+                                ->orWhere('category_full', 'LIKE', '%' . $search .'%')
+                            ;
+                        })
+                    ;
                 }
             });
     }

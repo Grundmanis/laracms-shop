@@ -2,6 +2,7 @@
 
 namespace Grundmanis\Laracms\Modules\Shop\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Gloudemans\Shoppingcart\Facades\Cart;
 
@@ -47,6 +48,21 @@ class Product extends Model
         'description',
         'delete_product'
     ];
+
+    // scopeWhereDeleted != 0
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::addGlobalScope('available', function (Builder $builder) {
+            $builder->where('delete_product', '=', 0);
+            $builder->whereHas('shop', function ($query) {
+                $query->where('sandbox', 0);
+                $query->doesntHave('blocked');
+            });
+        });
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -135,6 +151,15 @@ class Product extends Model
     public function getNoVatPriceAttribute($value)
     {
         return number_format(100 * $this->price / 121, 2);
+    }
+
+    /**
+     * @param $name
+     * @return float
+     */
+    public function getNameAttribute($name)
+    {
+        return html_entity_decode($name);
     }
 
     /**
