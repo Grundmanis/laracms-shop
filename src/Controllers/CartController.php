@@ -47,9 +47,28 @@ class CartController extends Controller
 
         $user = Auth::user();
 
+        $deliveryPrices = [];
+        foreach($cart as $shop => $shopProducts) {
+            $shop = $shopProducts['shop'];
+            $deliveries = $shop->deliveries;
+
+            $price = 0;
+            if ($user->delivery) {
+                $delivery = $deliveries->filter(function($value, $key) use ($user) {
+                   return $value->delivery == $user->delivery;
+                })->first();
+
+                if ($delivery) {
+                    $price = $delivery->price;
+                }
+            }
+            $deliveryPrices[$shop->id] = $price;
+        }
+
         return view('cart', [
             'user' => $user,
-            'cart' => $cart
+            'cart' => $cart,
+            'deliveryPrices' => $deliveryPrices
         ]);
     }
 
