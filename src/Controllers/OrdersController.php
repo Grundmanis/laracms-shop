@@ -56,6 +56,7 @@ class OrdersController extends Controller
      */
     public function order(Request $request)
     {
+//        dd($request->all());
         $shops = [];
         foreach ($request->except('_token') as $key => $shopData) {
             foreach ($shopData as $shop => $keyValue) {

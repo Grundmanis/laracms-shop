@@ -74,6 +74,7 @@ class CartController extends Controller
 
     /**
      * @param Product $product
+     * @param Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function add(Product $product, Request $request)
@@ -84,13 +85,15 @@ class CartController extends Controller
             ['instance', 'shoppingcart']
         ])->delete();
 
+        $price = str_replace(',', '', $product->price);
+
         $cart = $this->cart->instance('shoppingcart');
 
         $cart->add(
             $product->id,
             $product->name,
             $request->qty ?: 1,
-            $product->price,
+            floatval($price),
             [
                 'item' => $product,
                 'shop' => $product->shop->id,
