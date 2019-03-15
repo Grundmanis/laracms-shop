@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
-    protected $fillable = ['user_id', 'amount'];
+    protected $fillable = ['user_id', 'amount', 'shop_id', 'delivery_price', 'delivery'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -32,5 +32,13 @@ class Order extends Model
     public function getCreatedAtAttribute($value)
     {
         return date('H:i:s d-m-Y', strtotime($value));
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
+     */
+    public function products()
+    {
+        return $this->hasManyThrough(Product::class, OrderItem::class, 'product_id', 'id');
     }
 }

@@ -120,9 +120,17 @@ class Shop extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
      */
-    public function orders()
+    public function orderItems()
     {
         return $this->hasManyThrough(OrderItem::class, Product::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
+     */
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
     }
 
     /**

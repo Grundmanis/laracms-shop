@@ -2,16 +2,13 @@
 
 namespace Grundmanis\Laracms\Modules\Shop\Controllers;
 
+use App\Http\Controllers\Controller;
 use App\User;
 use Gloudemans\Shoppingcart\Cart;
-use Grundmanis\Laracms\Modules\Shop\Mails\ProductOrdered;
-use Grundmanis\Laracms\Modules\Shop\Models\Conversation;
 use Grundmanis\Laracms\Modules\Shop\Models\Order;
 use Grundmanis\Laracms\Modules\Shop\Models\Shop;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Mail;
-use App\Http\Controllers\Controller;
 
 class OrdersController extends Controller
 {
@@ -56,60 +53,83 @@ class OrdersController extends Controller
      */
     public function order(Request $request)
     {
-//        dd($request->all());
-        $shops = [];
-        foreach ($request->except('_token') as $key => $shopData) {
-            foreach ($shopData as $shop => $keyValue) {
-                $shops[$shop][$key] = $keyValue;
-            }
-        }
-
-        $order = $this->order->create([
-            'amount'  => $this->cart->subtotal(),
-            'user_id' => Auth::user()->id
-        ]);
-
+        // collect cart info per shop
+        $infoPerShop = [];
         $user = Auth::user();
-        $items = [];
-        $products = [];
-        $shopProducts = [];
-        foreach ($this->cart->content() as $product) {
-            $items[] = [
-                'qty'        => $product->qty,
-                'product_id' => $product->id,
-                'price'      => $product->price,
-                'order_id'   => $order->id,
-                'info' => isset($shops[$product->options->shop]) ? json_encode($shops[$product->options->shop]) : ''
-            ];
-            $products[] = $product->id;
-            if (!isset($shopProducts[$product->options->item->shop_id])) {
-                $shopProducts[$product->options->item->shop_id] = [];
-            }
-            $shopProducts[$product->options->item->shop_id][] = $product->options->item;
-        }
-        $order->items()->createMany($items);
 
-        $shops = $this->shop
-            ->join('products', 'shops.id', '=', 'products.shop_id')
-            ->whereIn('products.id', $products)
-            ->select('shops.*')
+        foreach ($request->except('_token') as $key => $shops) {
+            foreach ($shops as $shop => $keyValue) {
+                $infoPerShop[$shop][$key] = $keyValue;
+            }
+        }
+
+        // get shops with deliveries
+        $shops = Shop::whereIn('id', array_keys($infoPerShop))
+            ->with('deliveries')
             ->get();
 
-        foreach ($shopProducts as $shopId => $products) {
-            $shop = $shops->find($shopId);
-            if ($shop) {
-                foreach ($products as $product) {
-                    $shop->conversations()->create([
-                        'shop_id' => $shop->id,
-                        'sender_id' => $user->id,
-                        'message' => __('texts.want_to_buy', ['product' => $product->getLink()])
-                    ]);
+        // append the delivery price to $infoPerShop
+        foreach ($shops as $shop) {
+            $deliveryName = $infoPerShop[$shop->id]['delivery'];
+            if ($deliveryName) {
+                $delivery = $shop->deliveries->filter(function ($value, $key) use ($deliveryName) {
+                    return $value->delivery == $deliveryName;
+                })->first();
+
+                if ($delivery) {
+                    $infoPerShop[$shop->id]['delivery_price'] = $delivery->price;
                 }
             }
         }
 
+        $items = [];
+
+        // collect the ordered products
+        foreach ($this->cart->content() as $product) {
+            // calculate the full amount per shop
+            if (!isset($infoPerShop[$product->options->shop]['amount'])) {
+                $infoPerShop[$product->options->shop]['amount'] = 0;
+            }
+
+            $infoPerShop[$product->options->shop]['amount'] += $product->price * $product->qty;
+
+            if (!isset($items[$product->options->shop])) {
+                $items[$product->options->shop] = [];
+            }
+            // build the ordered items
+            $items[$product->options->shop][] = [
+                'qty'        => $product->qty,
+                'product_id' => $product->id,
+                'price'      => $product->price,
+                'info'       => isset($infoPerShop[$product->options->shop]) ? json_encode($infoPerShop[$product->options->shop]) : ''
+            ];
+        }
+
+        // create the order
+        foreach ($infoPerShop as $shopId => $shopOrder) {
+            $order = $this->order->create([
+                'user_id'        => $user->id,
+                'amount'         => $shopOrder['amount'],
+                'delivery'       => $shopOrder['delivery'],
+                'delivery_price' => $shopOrder['delivery_price'] ?? 0,
+                'shop_id'        => $shopId
+            ]);
+            $order->items()->createMany($items[$shopId]);
+        }
+
+//        // create the notification for the shop
+        foreach ($shops as $shop) {
+            $shop->conversations()->create([
+                'shop_id' => $shop->id,
+                'sender_id' => $user->id,
+                'message' => __('texts.want_to_buy')
+            ]);
+        }
+
+        // clean the cart
         $this->cart->destroy();
 
+        // create the notification for the user
         $user
             ->notifications()
             ->create([

@@ -35,6 +35,15 @@ class OrderItem extends Model
 
     /**
      * @param $value
+     * @return array|mixed
+     */
+    public function getPriceAttribute($value)
+    {
+        return (float)$value;
+    }
+
+    /**
+     * @param $value
      * @return false|string
      */
     public function getCreatedAtAttribute($value)
@@ -45,12 +54,17 @@ class OrderItem extends Model
     public function getDeliveryPriceAttribute()
     {
         if ($this->info->delivery) {
-            if ($deliveryPrice = $this->product->shop->deliveries->where('delivery', $this->info->delivery)->first())
+            if ($deliveryPrice = $this->product
+                ->shop
+                ->deliveries
+                ->where('delivery', $this->info->delivery)
+                ->first()
+            )
             {
                 return $deliveryPrice->price;
             }
         }
 
-        return '';
+        return 0;
     }
 }
