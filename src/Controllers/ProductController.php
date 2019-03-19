@@ -78,8 +78,10 @@ class ProductController extends Controller
         $shopMark = count($shopReviews) ? round($sum / count($shopReviews)) : 0;
 
         $names = explode(' ', $product->name);
+
         $similarProducts = $this->product
             ->where('name', 'like', '%'. $names[0] .'%')
+            ->where('id', '!=', $product->id)
             ->take(5)
             ->get();
 
@@ -97,11 +99,13 @@ class ProductController extends Controller
         $templates = LaracmsMailTemplate::get();
 
         $youSaw = [];
+
         if (Auth::check()) {
             $youSaw = Auth::user()
                 ->productsSeen()
-                ->with('product')
+                ->with('product.shop.reviews', 'product.reviews')
                 ->take(5)
+                ->orderByDesc('id')
                 ->get();
 
             Auth::user()
@@ -154,7 +158,6 @@ class ProductController extends Controller
 
         $shop->conversations()->create([
             'shop_id' => $shop->id,
-            'receiver_id' => $shop->user->id,
             'sender_id' => Auth::user()->id,
             'message' => $message
         ]);

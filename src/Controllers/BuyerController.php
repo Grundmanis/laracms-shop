@@ -86,7 +86,6 @@ class BuyerController extends Controller
 
         $data = [
             'avatar'     => isset($photoName) ? asset('avatars/' . $photoName) : $user->avatar,
-            'first_name' => $request->first_name,
             'full_name'  => $request->full_name,
             'last_name'  => $request->last_name,
             'email'      => $request->email,

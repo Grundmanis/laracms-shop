@@ -117,7 +117,7 @@ class OrdersController extends Controller
             $order->items()->createMany($items[$shopId]);
         }
 
-//        // create the notification for the shop
+        // create the notification for the shop
         foreach ($shops as $shop) {
             $shop->conversations()->create([
                 'shop_id' => $shop->id,
