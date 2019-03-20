@@ -29,7 +29,14 @@
                     <div class="col-md-6 form-inline">
                         <input id="xml" type="text" class="form-control{{ $errors->has('xml') ? ' is-invalid' : '' }}" name="xml"
                                value="{{ old('xml', $shop->xml) }}" autofocus>
-                        <small>{{ __('form.xml_hint') }}</small>
+                        <br>
+                        <small>
+                        @if($shop->xml_updated_at)
+                            {{ __('texts.last_update') }} {{ $shop->xml_updated_at }}
+                        @else
+                            {{ __('texts.wasnt_updated_yet') }}
+                        @endif
+                        </small>
 
                     </div>
                 </div>
