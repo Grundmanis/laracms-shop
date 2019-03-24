@@ -28,7 +28,6 @@ class ShopCreateRequest extends FormRequest
 
         return [
             'name' => 'required|unique:shops,name' . $uniqueName,
-            'reg_number' => 'required',
             'phone' => 'required|numeric',
             'email' => 'required|email',
             'address' => 'required',
