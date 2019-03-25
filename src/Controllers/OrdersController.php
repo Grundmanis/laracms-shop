@@ -119,10 +119,10 @@ class OrdersController extends Controller
 
         // create the notification for the shop
         foreach ($shops as $shop) {
-            $shop->conversations()->create([
-                'shop_id' => $shop->id,
-                'sender_id' => $user->id,
-                'message' => __('texts.want_to_buy')
+            $shop->notifications()->create([
+//                'shop_id' => $shop->id,
+//                'sender_id' => $user->id,
+                'message' => __('texts.want_to_buy', ['shop' => $shop->name])
             ]);
         }
 
