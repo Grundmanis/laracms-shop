@@ -49,7 +49,7 @@ class ProductController extends Controller
      */
     public function show(string $shopSlug, int $productId, string $name)
     {
-        $product = Product::withoutGlobalScope('available')->find($productId);
+        $product = Product::withoutGlobalScope('available')->with(['shop.reviews'])->find($productId);
 
 //        if ($product->shop->sandbox || $product->shop->blocked->count())
 //        {
@@ -66,16 +66,30 @@ class ProductController extends Controller
             ]);
         }
 
-        $shop = $this->shop->find($product->shop_id);
+        $shop = $product->shop;
         $shopOwner = Auth::check() && Auth::user()->id == $shop->user_id;
 
-        $reviews = $product->reviews;
+        $reviews = $product
+            ->reviews()
+            ->with('user')
+            ->orderByDesc('id')
+            ->get();
+
+        $markedReviews = $product
+            ->reviews()
+            ->where('mark', '!=', 0)
+            ->with('user')
+            ->orderByDesc('id')
+            ->get();
+
         $sum = $product->reviews->sum('mark');
-        $mark = count($reviews) ? round($sum / count($reviews)) : 0 ;
+        $mark = count($markedReviews) ? round($sum / count($markedReviews)) : 0 ;
 
         $shopReviews = $product->shop->reviews;
+        $markedShopReviews = $product->shop->reviews()
+            ->where('mark', '!=', 0)->get();
         $sum = $product->shop->reviews->sum('mark');
-        $shopMark = count($shopReviews) ? round($sum / count($shopReviews)) : 0;
+        $shopMark = count($markedShopReviews) ? round($sum / count($markedShopReviews)) : 0;
 
         $names = explode(' ', $product->name);
 
@@ -83,6 +97,7 @@ class ProductController extends Controller
             ->where('name', 'like', '%'. $names[0] .'%')
             ->where('id', '!=', $product->id)
             ->take(5)
+            ->with(['shop.reviews', 'reviews'])
             ->get();
 
         $inOtherShops = $this->product
@@ -94,6 +109,7 @@ class ProductController extends Controller
 //                    ->orWhere('manufacturer', 'like', '%' . $product->manufacturer . '%');
             })
             ->take(5)
+            ->with(['shop.reviews', 'reviews'])
             ->get();
 
         $templates = LaracmsMailTemplate::get();

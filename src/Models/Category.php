@@ -14,6 +14,8 @@ class Category extends Model
 
     protected $fillable = ['parent_category_id'];
 
+    protected $table = 'categories';
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -27,7 +29,7 @@ class Category extends Model
      */
     public function childCategories()
     {
-        return $this->hasMany(Category::class, 'parent_category_id');
+        return $this->hasMany(Category::class, 'parent_category_id', 'id');
     }
 
     /**
@@ -49,6 +51,6 @@ class Category extends Model
                         })
                     ;
                 }
-            });
+            })->with(['shop.reviews', 'reviews']);
     }
 }
