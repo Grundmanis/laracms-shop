@@ -91,10 +91,8 @@ class ProductController extends Controller
         $sum = $product->shop->reviews->sum('mark');
         $shopMark = count($markedShopReviews) ? round($sum / count($markedShopReviews)) : 0;
 
-        $names = explode(' ', $product->name);
-
         $similarProducts = $this->product
-            ->where('name', 'like', '%'. $names[0] .'%')
+            ->where('name', 'like', '%'. $product->name .'%')
             ->where('id', '!=', $product->id)
             ->take(5)
             ->with(['shop.reviews', 'reviews'])

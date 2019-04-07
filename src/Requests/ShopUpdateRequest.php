@@ -4,6 +4,7 @@ namespace Grundmanis\Laracms\Modules\Shop\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 class ShopUpdateRequest extends FormRequest
 {
@@ -28,6 +29,7 @@ class ShopUpdateRequest extends FormRequest
             'phone' => 'required|numeric',
             'email' => 'required|email',
             'address' => 'required',
+            'xml' => Rule::unique('shops')->ignore($this->shop->id, 'id')
         ];
 
         return $data;

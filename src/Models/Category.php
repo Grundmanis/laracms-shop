@@ -38,7 +38,7 @@ class Category extends Model
      */
     public function searchProducts(string $search)
     {
-        $searches = explode(' ', $search);
+        $searches = explode(',', $search);
 
         return Product::where(function($query) use ($searches) {
                 foreach ($searches as $search) {

@@ -32,6 +32,7 @@ class ShopCreateRequest extends FormRequest
             'email' => 'required|email',
             'address' => 'required',
             'logo' => 'image|dimensions:width=150,height=50',
+            'xml' => 'unique:shops'
         ];
     }
 }
