@@ -86,10 +86,6 @@ class ProductController extends Controller
         $mark = count($markedReviews) ? round($sum / count($markedReviews)) : 0 ;
 
         $shopReviews = $product->shop->reviews;
-        $markedShopReviews = $product->shop->reviews()
-            ->where('mark', '!=', 0)->get();
-        $sum = $product->shop->reviews->sum('mark');
-        $shopMark = count($markedShopReviews) ? round($sum / count($markedShopReviews)) : 0;
 
         $similarProducts = $this->product
             ->where('name', 'like', '%'. $product->name .'%')
@@ -129,7 +125,7 @@ class ProductController extends Controller
                 ]);
         }
 
-        return view('product', compact('product', 'templates', 'youSaw', 'mark', 'shopMark', 'reviews', 'shopReviews', 'similarProducts', 'inOtherShops', 'shopOwner'));
+        return view('product', compact('product', 'templates', 'youSaw', 'mark', 'reviews', 'shopReviews', 'similarProducts', 'inOtherShops', 'shopOwner'));
     }
 
     /**

@@ -153,4 +153,19 @@ class Shop extends Model
     {
         return route('shop', $this->slug);
     }
+
+    /**
+     * @return float|int
+     */
+    public function getMark()
+    {
+        $marks = $this
+            ->reviews()
+            ->where('mark', '!=', 0)
+            ->get();
+
+        $sum = $marks->sum('mark');
+
+        return count($marks) ? round($sum / count($marks)) : 0;
+    }
 }

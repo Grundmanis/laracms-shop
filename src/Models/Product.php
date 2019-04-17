@@ -163,6 +163,16 @@ class Product extends Model
     }
 
     /**
+     * @param $url
+     * @return float
+     */
+    public function getImageAttribute($url)
+    {
+        $image = @getimagesize($url) ? $url : asset('images/no-image.png');
+        return $image;
+    }
+
+    /**
      * @param $value
      * @return float
      */
