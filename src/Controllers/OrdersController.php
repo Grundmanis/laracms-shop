@@ -89,9 +89,9 @@ class OrdersController extends Controller
         // collect the ordered products
         foreach ($this->cart->content() as $product) {
 
-            $product = Product::find($product->id);
+            $dbProduct = Product::find($product->id);
 
-            if (!$product || empty($infoPerShop[$product->options->shop])) {
+            if (!$dbProduct || empty($infoPerShop[$product->options->shop])) {
                 $deleted = true;
                 continue;
             }
