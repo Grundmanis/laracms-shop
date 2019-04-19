@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\User;
 use Gloudemans\Shoppingcart\Cart;
 use Grundmanis\Laracms\Modules\Shop\Models\Order;
+use Grundmanis\Laracms\Modules\Shop\Models\Product;
 use Grundmanis\Laracms\Modules\Shop\Models\Shop;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -56,6 +57,7 @@ class OrdersController extends Controller
         // collect cart info per shop
         $infoPerShop = [];
         $user = Auth::user();
+        $deleted = false;
 
         foreach ($request->except('_token') as $key => $shops) {
             foreach ($shops as $shop => $keyValue) {
@@ -86,6 +88,14 @@ class OrdersController extends Controller
 
         // collect the ordered products
         foreach ($this->cart->content() as $product) {
+
+            $product = Product::find($product->id);
+
+            if (!$product) {
+                $deleted = true;
+                continue;
+            }
+
             // calculate the full amount per shop
             if (!isset($infoPerShop[$product->options->shop]['amount'])) {
                 $infoPerShop[$product->options->shop]['amount'] = 0;
@@ -107,6 +117,9 @@ class OrdersController extends Controller
 
         // create the order
         foreach ($infoPerShop as $shopId => $shopOrder) {
+            if (empty($shopOrder['amount'])) {
+                continue;
+            }
             $order = $this->order->create([
                 'user_id'        => $user->id,
                 'amount'         => $shopOrder['amount'],
@@ -117,29 +130,37 @@ class OrdersController extends Controller
             $order->items()->createMany($items[$shopId]);
         }
 
-        // create the notification for the shop
-        foreach ($shops as $shop) {
-            $shop->user->notifications()->create([
-                'text' => __('texts.want_to_buy', [
-                    'shop' => $shop->name,
-                    'url' => route('profile.shop.orders', $shop->id)
-                ])
-            ]);
+        if (!empty($items)) {
+            // create the notification for the shop
+            foreach ($shops as $shop) {
+                $shop->user->notifications()->create([
+                    'text' => __('texts.want_to_buy', [
+                        'shop' => $shop->name,
+                        'url' => route('profile.shop.orders', $shop->id)
+                    ])
+                ]);
+            }
+
+            // clean the cart
+            $this->cart->destroy();
+
+            // create the notification for the user
+            $user
+                ->notifications()
+                ->create([
+                    'text' => __('texts.leave_the_comment', ['route' => route('profile.orders')])
+                ]);
+
+            $status = $deleted ? __('texts.orders_created_but_deleted') : __('texts.orders_created') ;
+            return redirect()
+                ->route('home')
+                ->with('status', $status);
         }
-
-        // clean the cart
-        $this->cart->destroy();
-
-        // create the notification for the user
-        $user
-            ->notifications()
-            ->create([
-            'text' => __('texts.leave_the_comment', ['route' => route('profile.orders')])
-        ]);
 
         return redirect()
             ->route('home')
-            ->with('status', __('texts.orders_created'));
+            ->with('status', __('texts.products_were_deleted'));
+
 
     }
 }
