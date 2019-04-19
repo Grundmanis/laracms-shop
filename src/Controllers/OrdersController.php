@@ -91,7 +91,7 @@ class OrdersController extends Controller
 
             $product = Product::find($product->id);
 
-            if (!$product) {
+            if (!$product || empty($infoPerShop[$product->options->shop])) {
                 $deleted = true;
                 continue;
             }
