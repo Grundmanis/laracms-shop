@@ -50,7 +50,7 @@ class CartController extends Controller
         $deliveryPrices = [];
         foreach($cart as $shop => $shopProducts) {
             $shop = $shopProducts['shop'];
-            $deliveries = $shop->deliveries;
+            $deliveries = $shop->deliveries()->where('enabled', 1)->get();
 
             $price = 0;
             if ($user->delivery) {

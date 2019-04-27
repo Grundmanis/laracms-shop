@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Delivery extends Model
 {
-    protected $fillable = ['deliveryable_type', 'deliveryable_id', 'delivery', 'price'];
+    protected $fillable = ['deliveryable_type', 'deliveryable_id', 'delivery', 'price', 'enabled'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\MorphTo

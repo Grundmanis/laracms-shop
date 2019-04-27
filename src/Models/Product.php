@@ -168,7 +168,7 @@ class Product extends Model
      */
     public function getImageAttribute($url)
     {
-        return asset('images/no-image.png');
+//        return asset('images/no-image.png');
         $image = @getimagesize($url) ? $url : asset('images/no-image.png');
         return $image;
     }
