@@ -25,16 +25,21 @@ class ShopCreateRequest extends FormRequest
     public function rules()
     {
         $uniqueName = $this->shop ? ',' . $this->shop->id : '';
-
-        return [
+        $rules = [
             'name' => 'required|unique:shops,name' . $uniqueName,
             'phone' => 'required|numeric',
             'email' => 'required|email',
             'address' => 'required',
             'logo' => 'image|dimensions:width=150,height=50',
-            'xml' => 'unique:shops',
             'delivery' => 'required|array',
+            'delivery.*.price' => 'numeric|nullable',
             'payment' => 'required|array',
-        ];
+            ];
+
+        if ($this->xml) {
+            $rules['xml'] = 'unique:shops';
+        }
+
+        return $rules;
     }
 }
