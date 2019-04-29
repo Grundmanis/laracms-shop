@@ -7,7 +7,7 @@
         {{ csrf_field() }}
 
         <div class="form-group">
-            <label for="parent_category_id">Parent Category</label>
+            <label for="parent_category_id">{{ __('texts.parent_category') }}</label>
             <select class="form-control" name="parent_category_id" id="parent_category_id">
                 <option value="">-</option>
                 @foreach($categories as $parentCategory)
@@ -31,7 +31,7 @@
         </div>
         <!-- Tab panes -->
         <div class="tab-content">
-            <label title="name">Name</label>
+            <label title="name">{{ __('texts.name') }}</label>
 
             @foreach($locales as $key => $locale)
                 <div class="tab-pane @if(!$key) active @endif" id="{{ $locale }}">
@@ -42,6 +42,6 @@
             @endforeach
         </div>
 
-        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="submit" class="btn btn-primary">{{ __('texts.save') }}</button>
     </form>
 @endsection

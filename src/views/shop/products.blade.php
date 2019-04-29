@@ -1,4 +1,4 @@
-@extends('laracms.dashboard::layouts.app', ['page' => 'Products'])
+@extends('laracms.dashboard::layouts.app', ['page' => __('texts.products')])
 
 @section('content')
     <div class="content">
@@ -11,11 +11,11 @@
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>Name</th>
-                            <th>Price</th>
-                            <th>Category</th>
-                            <th>Show</th>
-                            <th>Created at</th>
+                            <th>{{ __('texts.name') }}</th>
+                            <th>{{ __('texts.price') }}</th>
+                            <th>{{ __('texts.category') }}</th>
+                            <th>{{ __('texts.show') }}</th>
+                            <th>{{ __('texts.created_at') }}</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -26,7 +26,7 @@
                                 <td>{{ $product->name }}</td>
                                 <td>{{ $product->price }}</td>
                                 <td>{{ $product->category }}</td>
-                                <td><a target="_blank" href="{{ $product->getLink() }}">Open in shop</a></td>
+                                <td><a target="_blank" href="{{ $product->getLink() }}">{{ __('texts.open_in_shop') }}</a></td>
                                 <td>{{ $product->created_at }}</td>
                             </tr>
                         @endforeach

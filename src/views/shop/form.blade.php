@@ -1,4 +1,4 @@
-@extends('laracms.dashboard::layouts.app', ['page' => 'Shop'])
+@extends('laracms.dashboard::layouts.app', ['page' => __('texts.shop')])
 
 @section('content')
     <form enctype="multipart/form-data" method="POST">
@@ -6,7 +6,7 @@
 
         <div class="row no-styled-checkboxes">
             <div class="col-md-6">
-                <h3>Info</h3>
+                <h3>{{ __('texts.info') }}</h3>
                 <div class="form-group row">
                     <label for="blocked" class="col-md-4 col-form-label text-md-right">{{ __('form.blocked') }}</label>
 
@@ -43,15 +43,15 @@
                 @include('partials.shop.info', ['admin' => true])
             </div>
             <div class="col-md-6">
-                <h3>Delivery</h3>
+                <h3>{{ __('texts.delivery') }}</h3>
                 @include('partials.shop.delivery')
-                <h3>Payment</h3>
+                <h3>{{ __('texts.payment') }}</h3>
                 @include('partials.shop.payment')
             </div>
         </div>
         <div class="row">
             <div class="col-md-7">
-                <h3>Worktime</h3>
+                <h3>{{ __('texts.worktime') }}</h3>
                 @include('shop.partials.worktime')
                 <div class="form-group row mb-0">
                     <div class="col-md-6 offset-md-4">
@@ -66,7 +66,7 @@
     </form>
     <div class="row">
         <div class="col-md-12">
-            <h3>Reviews</h3>
+            <h3>{{ __('texts.reviews') }}</h3>
             @include('partials.shop.shop_comments')
         </div>
     </div>

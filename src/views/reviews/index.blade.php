@@ -1,4 +1,4 @@
-@extends('laracms.dashboard::layouts.app', ['page' => 'Reviews'])
+@extends('laracms.dashboard::layouts.app', ['page' => __('admin.menu.reviews')])
 
 @section('content')
 
@@ -9,10 +9,10 @@
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>Comment</th>
-                    <th>User</th>
-                    <th>Model</th>
-                    <th>Created at</th>
+                    <th>{{ __('texts.comment') }}</th>
+                    <th>{{ __('texts.user') }}</th>
+                    <th>{{ __('texts.model') }}</th>
+                    <th>{{ __('texts.created_at') }}</th>
                     <th></th>
                 </tr>
             </thead>
@@ -38,16 +38,16 @@
                             </a>
                         @else
                             <a target="_blank" href="{{ route('shop', $review->reviewable->slug) }}">
-                                Shop: {{ $review->reviewable->name }}
+                                {{ __('texts.shop') }}: {{ $review->reviewable->name }}
                             </a>
                         @endif
                     </td>
                     <td>{{ $review->created_at }}</td>
                     <td>
-                        <a href="{{ route('laracms.reviews.edit', $review->id) }}">Edit</a>
+                        <a href="{{ route('laracms.reviews.edit', $review->id) }}">{{ __('texts.edit') }}</a>
                         |
                         <a onclick="return confirm('Are you sure?')"
-                           href="{{ route('laracms.reviews.destroy', $review->id) }}">Delete</a>
+                           href="{{ route('laracms.reviews.destroy', $review->id) }}">{{ __('texts.delete') }}</a>
                     </td>
                 </tr>
             @endforeach

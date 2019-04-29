@@ -1,4 +1,4 @@
-@extends('laracms.dashboard::layouts.app', ['page' => 'Buyer'])
+@extends('laracms.dashboard::layouts.app', ['page' => __('admin.menu.customers')])
 
 @section('content')
     <form enctype="multipart/form-data" method="post">
@@ -33,7 +33,7 @@
             </div>
         </div>
 
-        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="submit" class="btn btn-primary">{{ __('texts.save') }}</button>
     </form>
 
     <h3>Reviews</h3>

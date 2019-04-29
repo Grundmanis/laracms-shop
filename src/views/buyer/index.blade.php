@@ -8,13 +8,13 @@
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>Login</th>
-                    <th>Full name</th>
-                    <th>E-mail</th>
-                    <th>Orders</th>
-                    <th>Reviews</th>
-                    <th>Blocked</th>
-                    <th>Created at</th>
+                    <th>{{ __('texts.login') }}</th>
+                    <th>{{ __('texts.full_name') }}</th>
+                    <th>{{ __('texts.email') }}</th>
+                    <th>{{ __('texts.orders') }}</th>
+                    <th>{{ __('texts.reviews') }}</th>
+                    <th>{{ __('texts.blocked') }}</th>
+                    <th>{{ __('texts.created_at') }}</th>
                     <th></th>
                 </tr>
             </thead>
@@ -30,10 +30,10 @@
                     <td>{{ $customer->blocked()->count() ? 'Да' : 'Нет' }}</td>
                     <td>{{ $customer->created_at }}</td>
                     <td>
-                        <a href="{{ route('laracms.customers.edit', $customer->id) }}">Edit</a>
+                        <a href="{{ route('laracms.customers.edit', $customer->id) }}">{{ __('texts.edit') }}</a>
                         |
                         <a onclick="return confirm('Are you sure?')"
-                           href="{{ route('laracms.customers.destroy', $customer->id) }}">Delete</a>
+                           href="{{ route('laracms.customers.destroy', $customer->id) }}">{{ __('texts.delete') }}</a>
                     </td>
                 </tr>
             @endforeach

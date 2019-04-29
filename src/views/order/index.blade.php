@@ -28,7 +28,7 @@
                         <td>{{ $order->shop->name }}</td>
                         <td>{{ $order->amount }} EUR </td>
                         <td>{{ $order->delivery }}</td>
-                        <td><a href="{{ route('laracms.orders.items', $order->id) }}">see products</a></td>
+                        <td><a href="{{ route('laracms.orders.items', $order->id) }}">{{ __('texts.see_products') }}</a></td>
                         <td>{{ $order->created_at }}</td>
                     </tr>
                 @endforeach

@@ -1,4 +1,4 @@
-@extends('laracms.dashboard::layouts.app', ['page' => 'Shops'])
+@extends('laracms.dashboard::layouts.app', ['page' => __('texts.shops')])
 
 @section('content')
 
@@ -9,12 +9,12 @@
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>Blocked</th>
-                    <th>Sandbox</th>
-                    <th>Name</th>
-                    <th>Owner</th>
-                    <th>Products</th>
-                    <th>Created at</th>
+                    <th>{{ __('texts.blocked') }}</th>
+                    <th>{{ __('texts.sandbox') }}</th>
+                    <th>{{ __('texts.name') }}</th>
+                    <th>{{ __('texts.owner') }}</th>
+                    <th>{{ __('texts.products') }}</th>
+                    <th>{{ __('texts.created_at') }}</th>
                     <th></th>
                 </tr>
             </thead>
@@ -29,15 +29,15 @@
                     <td>
                         <a href="{{ route('laracms.shops.products', $shop->id) }}">
                             {{ $shop->products()->count() }}
-                            (show)
+                            ({{ __('texts.show') }})
                         </a>
                     </td>
                     <td>{{ $shop->created_at }}</td>
                     <td>
-                        <a href="{{ route('laracms.shops.edit', $shop->id) }}">Edit</a>
+                        <a href="{{ route('laracms.shops.edit', $shop->id) }}">{{ __('texts.edit') }}</a>
                         |
-                        <a onclick="return confirm('Are you sure?')"
-                           href="{{ route('laracms.shops.destroy', $shop->id) }}">Delete</a>
+                        <a onclick="return confirm('{{ __('texts.are_you_sure') }}')"
+                           href="{{ route('laracms.shops.destroy', $shop->id) }}">{{ __('texts.delete') }}</a>
                     </td>
                 </tr>
             @endforeach

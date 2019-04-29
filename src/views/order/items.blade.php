@@ -6,11 +6,11 @@
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>Product</th>
-                    <th>Qty</th>
-                    <th>Price</th>
-                    <th>Total</th>
-                    <th>Created at</th>
+                    <th>{{ __('texts.products') }}</th>
+                    <th>{{ __('texts.qty') }}</th>
+                    <th>{{ __('texts.price') }}</th>
+                    <th>{{ __('texts.total') }}</th>
+                    <th>{{ __('texts.created_at') }}</th>
                     <th></th>
                 </tr>
             </thead>
