@@ -80,6 +80,7 @@ class CartController extends Controller
     public function add(Product $product, Request $request)
     {
         $identifier = Auth::user()->email . '_shoppingcart';
+
         DB::table(config('cart.database.table'))->where([
             ['identifier', $identifier],
             ['instance', 'shoppingcart']

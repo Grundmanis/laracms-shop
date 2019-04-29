@@ -10,6 +10,7 @@ use Grundmanis\Laracms\Modules\Shop\Models\Product;
 use Grundmanis\Laracms\Modules\Shop\Models\Shop;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class OrdersController extends Controller
 {
@@ -144,6 +145,13 @@ class OrdersController extends Controller
             // clean the cart
             $this->cart->destroy();
 
+            $identifier = Auth::user()->email . '_shoppingcart';
+
+            DB::table(config('cart.database.table'))->where([
+                ['identifier', $identifier],
+                ['instance', 'shoppingcart']
+            ])->delete();
+
             // create the notification for the user
             $user
                 ->notifications()
@@ -151,7 +159,7 @@ class OrdersController extends Controller
                     'text' => __('texts.leave_the_comment', ['route' => route('profile.orders')])
                 ]);
 
-            $status = $deleted ? __('texts.orders_created_but_deleted') : __('texts.orders_created') ;
+            $status = $deleted ? __('texts.orders_created_but_deleted') : __('texts.orders_created');
             return redirect()
                 ->route('home')
                 ->with('status', $status);
