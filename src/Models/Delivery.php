@@ -15,4 +15,9 @@ class Delivery extends Model
     {
         return $this->morphTo();
     }
+
+    public function getPriceAttribute($value)
+    {
+        return str_replace(',', '.', $value);
+    }
 }
