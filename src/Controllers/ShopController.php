@@ -103,8 +103,8 @@ class ShopController extends Controller
         $shop->update([
             'logo' => isset($photoName) ? asset('logos/' . $photoName) : $shop->logo,
             'xml' => $request->xml,
-            'name' => $request->name,
-//            'reg_number' => $request->reg_number,
+            'name' => $request->name ?: $shop->name,
+            //'reg_number' => $request->reg_number,
             'phone' => $request->phone,
             'second_phone' => $request->second_phone,
             'email' => $request->email,
@@ -115,17 +115,19 @@ class ShopController extends Controller
 
         if ($request->delivery) {
             $shop->deliveries()->delete();
-            $data = [];
+            $deliveries = [];
             foreach ($request->delivery as $delivery => $deliveryData)  {
-                if ($deliveryData['price'] != null) {
-                    $data[] = [
-                        'delivery' => $delivery,
-                        'price'    => $deliveryData['price'] ?? 0,
-                        'shop_id'  => $shop->id
-                    ];
+                if (($deliveryData['price'] === null || $deliveryData['price'] == 0) && !$deliveryData['enabled']) {
+                    continue;
                 }
+                $deliveries[] = [
+                    'delivery' => $delivery,
+                    'price'    => $deliveryData['price'] ? (string)$deliveryData['price'] : 0,
+                    'enabled'    => $deliveryData['enabled'],
+                    'shop_id'  => $shop->id
+                ];
             }
-            $shop->deliveries()->createMany($data);
+            $shop->deliveries()->createMany($deliveries);
         }
 
         if ($request->payment) {

@@ -30,21 +30,6 @@
     </div>
 </div>
 <div class="form-group row">
-    <label for="reg_number" class="col-md-4 col-form-label text-md-right">{{ __('form.reg_number') }}
-        <span></span></label>
-    <div class="col-md-6">
-        <input id="reg_number" type="text" class="form-control{{ $errors->has('reg_number') ? ' is-invalid' : '' }}"
-               name="reg_number"
-               value="{{ old('reg_number', isset($shop) ? $shop->reg_number : '') }}" required autofocus>
-
-        @if ($errors->has('reg_number'))
-            <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('reg_number') }}</strong>
-                                    </span>
-        @endif
-    </div>
-</div>
-<div class="form-group row">
     <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('form.phone') }} <span></span></label>
     <div class="col-md-6">
         <input id="phone" type="text" class="form-control{{ $errors->has('phone') ? ' is-invalid' : '' }}" name="phone"
@@ -132,7 +117,7 @@
         <div class="form-group row">
             <label for="field_{{ $field->id }}" class="col-md-4 col-form-label text-md-right">{{ $field->name }} <span></span></label>
             <div class="col-md-6">
-                <input id="field_{{ $field->id }}" required type="text" class="form-control"
+                <input id="field_{{ $field->id }}" type="text" class="form-control"
                        name="fields[{{ $field->id }}]"
                        value="{{ old('fields.' . $field->id, isset($fieldValues) && isset($fieldValues[$field->id]) ? $fieldValues[$field->id]->value : '') }}">
 
