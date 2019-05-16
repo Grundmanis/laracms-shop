@@ -104,7 +104,7 @@ class ShopController extends Controller
             'logo' => isset($photoName) ? asset('logos/' . $photoName) : $shop->logo,
             'xml' => $request->xml,
             'name' => $request->name,
-            'reg_number' => $request->reg_number,
+//            'reg_number' => $request->reg_number,
             'phone' => $request->phone,
             'second_phone' => $request->second_phone,
             'email' => $request->email,
