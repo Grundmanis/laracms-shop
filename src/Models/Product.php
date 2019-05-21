@@ -5,6 +5,7 @@ namespace Grundmanis\Laracms\Modules\Shop\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Gloudemans\Shoppingcart\Facades\Cart;
+use Illuminate\Support\Facades\App;
 
 /**
  * @property  $price
@@ -46,7 +47,33 @@ class Product extends Model
         'shop_id',
         'id_from_shop',
         'description',
-        'delete_product'
+        'delete_product',
+        'description_ru',
+        'name_ru',
+        'manufacturer_code',
+        'manufacturer_link',
+        'link_ru',
+        'category_full_ru',
+        'return_term',
+        'insurance_term',
+        'insurance_cost',
+        'additional_warranty_term',
+        'additional_warranty_cost',
+        'gift_link',
+        'credit_free',
+        'credit_free_term',
+        'credit_pay_3',
+        'credit_pay_6',
+        'credit_pay_12',
+        'credit_pay_24',
+        'credit_pay_36',
+        'credit_pay_x',
+        'credit_pay_x_term',
+        'delivery_office',
+        'delivery_days_office',
+        'delivery_days_latvijas_pasts',
+        'delivery_pakomats',
+        'delivery_days_pakomats'
     ];
 
     // scopeWhereDeleted != 0
@@ -70,6 +97,14 @@ class Product extends Model
     public function images()
     {
         return $this->hasMany(ProductImage::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function videos()
+    {
+        return $this->hasMany(ProductVideo::class);
     }
 
     /**
@@ -159,7 +194,38 @@ class Product extends Model
      */
     public function getNameAttribute($name)
     {
+        $name = App::getLocale() == 'ru' && $this->name_ru != '' ? $this->name_ru : $name;
         return html_entity_decode($name);
+    }
+
+    /**
+     * @param $link
+     * @return float
+     */
+    public function getLinkAttribute($link)
+    {
+        $link = App::getLocale() == 'ru' && $this->link_ru != '' ? $this->link_ru : $link;
+        return $link;
+    }
+
+    /**
+     * @param $category_full
+     * @return float
+     */
+    public function getCategoryFullAttribute($category_full)
+    {
+        $category_full = App::getLocale() == 'ru' && $this->category_full_ru != '' ? $this->category_full_ru : $category_full;
+        return $category_full;
+    }
+
+    /**
+     * @param $description
+     * @return float
+     */
+    public function getDescriptionAttribute($description)
+    {
+        $description = App::getLocale() == 'ru' && $this->description_ru != '' ? $this->description_ru : $description;
+        return $description;
     }
 
     /**
