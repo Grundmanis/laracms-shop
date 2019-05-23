@@ -39,7 +39,7 @@ class BuyerController extends Controller
             ;
         }
         return view('laracms.shop::buyer.index', [
-            'customers' => $customers->paginate(10)
+            'customers' => $customers->orderByDesc('id')->paginate(50)
         ]);
     }
 

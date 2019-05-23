@@ -29,7 +29,7 @@ class FieldController extends Controller
     public function index(Request $request)
     {
         return view('laracms.shop::shop_field.index', [
-            'fields' => $this->field->paginate(10)
+            'fields' => $this->field->orderByDesc('id')->paginate(50)
         ]);
     }
 

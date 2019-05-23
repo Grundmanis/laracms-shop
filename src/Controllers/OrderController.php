@@ -29,7 +29,7 @@ class OrderController extends Controller
         $orders = $this->order;
 
         return view('laracms.shop::order.index', [
-            'orders' => $orders->paginate(25)
+            'orders' => $orders->orderByDesc('id')->paginate(50)
         ]);
     }
 

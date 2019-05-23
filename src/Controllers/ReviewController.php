@@ -36,7 +36,7 @@ class ReviewController extends Controller
             ;
         }
 
-        $reviews = $reviews->paginate(25);
+        $reviews = $reviews->orderByDesc('id')->paginate(50);
 
         return view('laracms.shop::reviews.index', [
             'reviews' => $reviews

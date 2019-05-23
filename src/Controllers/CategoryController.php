@@ -29,7 +29,7 @@ class CategoryController extends Controller
     public function index(Request $request)
     {
         return view('laracms.shop::category.index', [
-            'categories' => $this->category->paginate(10)
+            'categories' => $this->category->orderByDesc('id')->paginate(50)
         ]);
     }
 
