@@ -160,6 +160,7 @@ class OrdersController extends Controller
                 ]);
 
             $status = $deleted ? __('texts.orders_created_but_deleted') : __('texts.orders_created');
+
             return redirect()
                 ->route('home')
                 ->with('status', $status);

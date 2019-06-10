@@ -18,7 +18,7 @@
                 @foreach($items as $item)
                     <tr>
                         <td>{{ $item->id }}</td>
-                        <td><a target="_blank" href="{{ route('product.show', [$item->product->shop->slug, $item->product_id, $item->product->name]) }}">{{ $item->product->name }}</a></td>
+                        <td><a target="_blank" href="{{ $item->product->getLink() }}">{{ $item->product->name }}</a></td>
                         <td>{{ $item->qty }}</td>
                         <td>{{ $item->price }} &euro;</td>
                         <td>{{ $item->qty * $item->price }} &euro;</td>
