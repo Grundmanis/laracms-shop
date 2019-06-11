@@ -29,7 +29,11 @@
                     </td>
                     <td>
                         @if ($review->reviewable->shop_id)
-                            <a target="_blank" href="{{ $review->reviewable->getLink() }}">
+                            <a target="_blank" href="{{ route('product.show', [
+                                $review->reviewable->shop->slug,
+                                $review->reviewable->id,
+                                $review->reviewable->name
+                            ]) }}">
                                 Product: {{ $review->reviewable->name }}
                             </a>
                         @else

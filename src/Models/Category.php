@@ -47,6 +47,8 @@ class Category extends Model
                             $subQuery
                                 ->where('name', 'LIKE', '%' . $search .'%')
                                 ->orWhere('category_full', 'LIKE', '%' . $search .'%')
+                                ->orWhere('name_ru', 'LIKE', '%' . $search .'%')
+                                ->orWhere('category_full_ru', 'LIKE', '%' . $search .'%')
                             ;
                         })
                     ;
