@@ -33,7 +33,7 @@ class ShopCreateRequest extends FormRequest
             'logo' => 'required|image',
             'delivery' => 'required|array',
             'delivery.*.price' => 'numeric|nullable',
-            'payment' => 'required|array',
+            'payment' => 'array',
             ];
 
         if ($this->xml) {
