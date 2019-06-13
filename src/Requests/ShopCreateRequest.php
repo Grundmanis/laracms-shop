@@ -30,7 +30,7 @@ class ShopCreateRequest extends FormRequest
             'phone' => 'required|numeric',
             'email' => 'required|email',
             'address' => 'required',
-            'logo' => 'image|dimensions:width=150,height=50',
+            'logo' => 'required|image',
             'delivery' => 'required|array',
             'delivery.*.price' => 'numeric|nullable',
             'payment' => 'required|array',
