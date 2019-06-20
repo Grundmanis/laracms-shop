@@ -107,7 +107,6 @@ class ShopController extends Controller
             //'reg_number' => $request->reg_number,
             'phone' => $request->phone,
             'second_phone' => $request->second_phone,
-            'manager_phone' => $request->manager_phone,
             'email' => $request->email,
             'second_email' => $request->second_email,
             'address' => $request->address,
