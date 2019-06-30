@@ -8,5 +8,5 @@ class ReviewImage extends Model
 {
     protected $table = 'review_images';
 
-    protected $fillable = ['url', 'review_id'];
+    protected $fillable = ['url', 'thumbnail', 'review_id'];
 }

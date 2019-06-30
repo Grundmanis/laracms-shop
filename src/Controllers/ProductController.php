@@ -2,6 +2,7 @@
 
 namespace Grundmanis\Laracms\Modules\Shop\Controllers;
 
+use App\Console\Commands\UploadImage;
 use Grundmanis\Laracms\Modules\MailTemplate\Models\LaracmsMailTemplate;
 use Grundmanis\Laracms\Modules\Shop\Models\Product;
 use Grundmanis\Laracms\Modules\Shop\Models\Review;
@@ -144,11 +145,11 @@ class ProductController extends Controller
         if ($request->images) {
             $names = [];
             foreach ($request->images as $image) {
-                $name = time() . uniqid() . '.'.$image->getClientOriginalExtension();
-                $image->move(public_path('comments'), $name);
+                $photoPath = (new UploadImage('images/review', $image))->handle();
                 $names[] = [
-                  'url' => $name,
-                  'review_id' => $review->id
+                    'url' => $photoPath['originalImagePath'],
+                    'thumbnail' => $photoPath['thumbnailPath'],
+                    'review_id' => $review->id
                 ];
             }
             $review->images()->createMany($names);
