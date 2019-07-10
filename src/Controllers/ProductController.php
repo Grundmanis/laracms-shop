@@ -145,7 +145,7 @@ class ProductController extends Controller
         if ($request->images) {
             $names = [];
             foreach ($request->images as $image) {
-                $photoPath = (new UploadImage('images/review', $image))->handle();
+                $photoPath = (new UploadImage('images/review', $image))->uploadByRequestFile();
                 $names[] = [
                     'url' => $photoPath['originalImagePath'],
                     'thumbnail' => $photoPath['thumbnailPath'],
