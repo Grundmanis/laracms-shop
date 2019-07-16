@@ -31,6 +31,7 @@ class Product extends Model
         'link',
         'price',
         'image',
+        'thumbnail',
         'category',
         'category_full',
         'category_link',
