@@ -242,6 +242,15 @@ class Product extends Model
         $image = @getimagesize($url) ? $url : asset('images/no-image.png');
         return $image;
     }
+    /**
+     * @param $url
+     * @return float
+     */
+    public function getThumbnailAttribute($url)
+    {
+        $image = $url ? $url : asset('images/no-image.png');
+        return $image;
+    }
 
     /**
      * @param $value
