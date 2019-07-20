@@ -248,7 +248,7 @@ class Product extends Model
      */
     public function getThumbnailAttribute($url)
     {
-        $image = $url ? $url : asset('images/no-image.png');
+        $image = $url ? $url : $this->image;
         return $image;
     }
 
