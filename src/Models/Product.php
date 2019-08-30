@@ -75,9 +75,7 @@ class Product extends Model
         'delivery_days_latvijas_pasts',
         'delivery_pakomats',
         'delivery_days_pakomats',
-        'new',
-        'original_image',
-        'old_original_image'
+        'new'
     ];
 
     // scopeWhereDeleted != 0

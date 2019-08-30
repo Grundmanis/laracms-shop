@@ -1,4 +1,4 @@
-@extends('laracms.dashboard::layouts.app', ['page' => __('texts.shop')])
+@extends(view()->exists('laracms.dashboard.layouts.app') ? 'laracms.dashboard.layouts.app' : 'laracms.dashboard::layouts.app', ['page' => __('laracms::admin.menu.shops')] )
 
 @section('content')
     <form enctype="multipart/form-data" method="POST">
@@ -40,19 +40,19 @@
 
                     </div>
                 </div>
-                @include('partials.shop.info', ['admin' => true])
+                @include(view()->exists('laracms.shop.partials.info') ? 'laracms.shop.partials.info' : 'laracms.shop::partials.info', ['admin' => true])
             </div>
             <div class="col-md-6">
                 <h3>{{ __('texts.delivery') }}</h3>
-                @include('partials.shop.delivery')
+                @include(view()->exists('laracms.shop.partials.delivery') ? 'laracms.shop.partials.delivery' : 'laracms.shop::partials.delivery')
                 <h3>{{ __('texts.payment') }}</h3>
-                @include('partials.shop.payment')
+                @include(view()->exists('laracms.shop.partials.payment') ? 'laracms.shop.partials.payment' : 'laracms.shop::partials.payment')
             </div>
         </div>
         <div class="row">
             <div class="col-md-7">
                 <h3>{{ __('texts.worktime') }}</h3>
-                @include('shop.partials.worktime')
+                @include(view()->exists('laracms.shop.partials.worktime') ? 'laracms.shop.partials.worktime' : 'laracms.shop::partials.worktime')
                 <div class="form-group row mb-0">
                     <div class="col-md-6 offset-md-4">
                         <button type="submit" class="btn btn-primary">
@@ -67,7 +67,7 @@
     <div class="row">
         <div class="col-md-12">
             <h3>{{ __('texts.reviews') }}</h3>
-            @include('partials.shop.shop_comments')
+            @include(view()->exists('laracms.shop.partials.shop_comments') ? 'laracms.shop.partials.shop_comments' : 'laracms.shop::partials.shop_comments')
         </div>
     </div>
 @endsection

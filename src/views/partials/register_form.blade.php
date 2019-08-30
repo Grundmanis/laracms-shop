@@ -117,8 +117,8 @@
 </div>
 
 @if (isset($user))
-    @include('partials.shop.delivery', ['buyer' => true])
-    @include('partials.shop.payment')
+    @include(view()->exists('laracms.shop.partials.delivery') ? 'laracms.shop.partials.delivery' : 'laracms.shop::partials.delivery', ['buyer' => true])
+    @include(view()->exists('laracms.shop.partials.payment') ? 'laracms.shop.partials.payment' : 'laracms.shop::partials.payment')
 @endif
 
 <div class="form-group row">

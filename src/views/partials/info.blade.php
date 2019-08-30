@@ -29,6 +29,21 @@
         @endif
     </div>
 </div>
+{{--<div class="form-group row">--}}
+{{--<label for="reg_number" class="col-md-4 col-form-label text-md-right">{{ __('form.reg_number') }}--}}
+{{--<span></span></label>--}}
+{{--<div class="col-md-6">--}}
+{{--<input id="reg_number" type="text" class="form-control{{ $errors->has('reg_number') ? ' is-invalid' : '' }}"--}}
+{{--name="reg_number"--}}
+{{--value="{{ old('reg_number', isset($shop) ? $shop->reg_number : '') }}" required autofocus>--}}
+
+{{--@if ($errors->has('reg_number'))--}}
+{{--<span class="invalid-feedback">--}}
+{{--<strong>{{ $errors->first('reg_number') }}</strong>--}}
+{{--</span>--}}
+{{--@endif--}}
+{{--</div>--}}
+{{--</div>--}}
 <div class="form-group row">
     <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('form.phone') }} <span></span></label>
     <div class="col-md-6">
@@ -114,18 +129,21 @@
 
 @foreach(\Grundmanis\Laracms\Modules\Shop\Models\ShopField::get() as $field)
     @continue(isset($shop) && $field->not_editable)
-        <div class="form-group row">
-            <label for="field_{{ $field->id }}" class="col-md-4 col-form-label text-md-right">{{ $field->name }} <span></span></label>
-            <div class="col-md-6">
-                <input id="field_{{ $field->id }}" type="text" class="form-control"
-                       name="fields[{{ $field->id }}]"
-                       value="{{ old('fields.' . $field->id, isset($fieldValues) && isset($fieldValues[$field->id]) ? $fieldValues[$field->id]->value : '') }}">
+    <?php
+    $fieldValues = isset($shop) ? $shop->fieldValues->keyBy('laracms_shop_field') : [];
+    ?>
+    <div class="form-group row">
+        <label for="field_{{ $field->id }}" class="col-md-4 col-form-label text-md-right">{{ $field->translate(App::getLocale())->name }}</label>
+        <div class="col-md-6">
+            <input id="field_{{ $field->id }}" type="text" class="form-control"
+                   name="fields[{{ $field->id }}]"
+                   value="{{ old('fields.' . $field->id, isset($fieldValues) && isset($fieldValues[$field->id]) ? $fieldValues[$field->id]->value : '') }}">
 
-                @if ($errors->has('fields.' . $field->id))
-                    <span class="invalid-feedback">
+            @if ($errors->has('fields.' . $field->id))
+                <span class="invalid-feedback">
                         <strong>{{ $errors->first('fields.' . $field->id) }}</strong>
                     </span>
-                @endif
-            </div>
+            @endif
         </div>
+    </div>
 @endforeach

@@ -38,6 +38,7 @@ class BuyerController extends Controller
                 ->orWhere('last_name', 'LIKE', '%'. $request->q .'%')
             ;
         }
+
         return view('laracms.shop::buyer.index', [
             'customers' => $customers->orderByDesc('id')->paginate(50)
         ]);

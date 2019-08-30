@@ -64,7 +64,7 @@ class ShopController extends Controller
         }
 
         return view('laracms.shop::shop.index', [
-            'shops' => $shops->orderByDesc('id')->paginate(50)
+            'shops' => $shops->orderByDesc('id')->paginate(15)
         ]);
     }
 
