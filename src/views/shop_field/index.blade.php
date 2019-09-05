@@ -1,4 +1,4 @@
-@extends(view()->exists('laracms.dashboard.layouts.app') ? 'laracms.dashboard.layouts.app' : 'laracms.dashboard::layouts.app', ['page' => __('laracms::admin.menu.shop_fields')] )
+@extends(view()->exists('laracms.dashboard.layouts.app') ? 'laracms.dashboard.layouts.app' : 'laracms.dashboard::layouts.app', ['page' => __('laracms::admin.menu.shop-fields')] )
 
 @section('content')
 
@@ -13,7 +13,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title">{{ __('laracms::admin.menu.shop_fields') }}</h4>
+                        <h4 class="card-title">{{ __('laracms::admin.menu.shop-fields') }}</h4>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">

@@ -1,4 +1,4 @@
-@extends(view()->exists('laracms.dashboard.layouts.app') ? 'laracms.dashboard.layouts.app' : 'laracms.dashboard::layouts.app', ['page' => __('laracms::admin.menu.order_items')] )
+@extends(view()->exists('laracms.dashboard.layouts.app') ? 'laracms.dashboard.layouts.app' : 'laracms.dashboard::layouts.app', ['page' => __('laracms::admin.menu.orders')] )
 
 @section('content')    <div class="content">
     <div class="row">
@@ -24,7 +24,11 @@
                             @foreach($items as $item)
                                 <tr>
                                     <td>{{ $item->id }}</td>
-                                    <td><a target="_blank" href="{{ $item->product->getLink() }}">{{ $item->product->name }}</a></td>
+                                    <td>
+                                        <a target="_blank"
+                                           href="{{ LaravelLocalization::getLocalizedURL(App::getLocale(), $item->product->getLink()) }}">
+                                            {{ $item->product->name }}
+                                        </a>
                                     <td>{{ $item->qty }}</td>
                                     <td>{{ $item->price }} &euro;</td>
                                     <td>{{ $item->qty * $item->price }} &euro;</td>

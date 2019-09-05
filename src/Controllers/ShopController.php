@@ -111,6 +111,7 @@ class ShopController extends Controller
             'email' => $request->email,
             'second_email' => $request->second_email,
             'address' => $request->address,
+            'slug' => $request->slug,
             'sandbox' => $request->sandbox ? 1 : 0
         ]);
 

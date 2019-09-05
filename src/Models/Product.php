@@ -32,10 +32,13 @@ class Product extends Model
         'price',
         'image',
         'thumbnail',
+        'original_image',
+        'old_original_image',
         'category',
         'category_full',
         'category_link',
         'manufacturer',
+
         'model',
         'guarantee_months',
         'credit',

@@ -18,13 +18,13 @@
                                     <thead class="text-primary">
                                         <tr>
                                             <th>#</th>
-                                            <th>{{ __('aracms::admin.login') }}</th>
-                                            <th>{{ __('aracms::admin.full_name') }}</th>
-                                            <th>{{ __('aracms::admin.email') }}</th>
-                                            <th>{{ __('aracms::admin.orders') }}</th>
-                                            <th>{{ __('aracms::admin.reviews') }}</th>
-                                            <th>{{ __('aracms::admin.blocked') }}</th>
-                                            <th>{{ __('aracms::admin.created_at') }}</th>
+                                            <th>{{ __('laracms::admin.login') }}</th>
+                                            <th>{{ __('laracms::admin.full_name') }}</th>
+                                            <th>{{ __('laracms::admin.email') }}</th>
+                                            <th>{{ __('laracms::admin.orders') }}</th>
+                                            <th>{{ __('laracms::admin.reviews') }}</th>
+                                            <th>{{ __('laracms::admin.blocked') }}</th>
+                                            <th>{{ __('laracms::admin.created_at') }}</th>
                                             <th>{{ __('laracms::admin.actions') }}</th>
                                         </tr>
                                     </thead>
