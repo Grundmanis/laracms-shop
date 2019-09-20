@@ -29,8 +29,11 @@ class ShopUpdateRequest extends FormRequest
             'phone' => 'required|numeric',
             'email' => 'required|email',
             'address' => 'required',
-            'xml' => Rule::unique('shops')->ignore($this->shop->id, 'id')
         ];
+
+        if ($this->xml) {
+            $data['xml'] = Rule::unique('shops')->ignore($this->shop->id, 'id');
+        }
 
         return $data;
     }

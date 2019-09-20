@@ -100,7 +100,13 @@ class ShopController extends Controller
             $request->logo->move(public_path('logos'), $photoName);
         }
 
+        if ($request->has('shop_photo')) {
+            $shopPhotoName = time() . '.' . $request->shop_photo->getClientOriginalExtension();
+            $request->shop_photo->move(public_path('shop_photos'), $shopPhotoName);
+        }
+
         $shop->update([
+            'shop_photo'    => isset($shopPhotoName) ? asset('shop_photos/' . $shopPhotoName) : $shop->shop_photo,
             'logo' => isset($photoName) ? asset('logos/' . $photoName) : $shop->logo,
             'xml' => $request->xml,
             'name' => $request->name ?: $shop->name,
@@ -112,7 +118,9 @@ class ShopController extends Controller
             'second_email' => $request->second_email,
             'address' => $request->address,
             'slug' => $request->slug,
-            'sandbox' => $request->sandbox ? 1 : 0
+            'sandbox' => $request->sandbox ? 1 : 0,
+            'lat'           => $request->lat,
+            'lon'           => $request->lon,
         ]);
 
         if ($request->delivery) {
