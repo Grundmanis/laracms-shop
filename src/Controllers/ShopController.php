@@ -4,7 +4,6 @@ namespace Grundmanis\Laracms\Modules\Shop\Controllers;
 
 use App\Http\Controllers\Controller;
 use Grundmanis\Laracms\Modules\Shop\Models\Product;
-use Grundmanis\Laracms\Modules\Shop\Models\Review;
 use Grundmanis\Laracms\Modules\Shop\Models\Shop;
 use Grundmanis\Laracms\Modules\Shop\Models\ShopFieldValue;
 use Illuminate\Http\Request;
@@ -51,16 +50,15 @@ class ShopController extends Controller
 
         if ($request->q) {
             $shops = $shops
-                ->where('name', 'LIKE', '%'. $request->q .'%')
-                ->orWhere('reg_number', 'LIKE', '%'. $request->q .'%')
-                ->orWhere('email', 'LIKE', '%'. $request->q .'%')
-                ->orWhere('second_email', 'LIKE', '%'. $request->q .'%')
-                ->orWhere('phone', 'LIKE', '%'. $request->q .'%')
-                ->orWhere('second_phone', 'LIKE', '%'. $request->q .'%')
-                ->orWhere('address', 'LIKE', '%'. $request->q .'%')
-                ->orWhere('xml', 'LIKE', '%'. $request->q .'%')
-                ->orWhere('slug', 'LIKE', '%'. $request->q .'%')
-                ;
+                ->where('name', 'LIKE', '%' . $request->q . '%')
+                ->orWhere('reg_number', 'LIKE', '%' . $request->q . '%')
+                ->orWhere('email', 'LIKE', '%' . $request->q . '%')
+                ->orWhere('second_email', 'LIKE', '%' . $request->q . '%')
+                ->orWhere('phone', 'LIKE', '%' . $request->q . '%')
+                ->orWhere('second_phone', 'LIKE', '%' . $request->q . '%')
+                ->orWhere('address', 'LIKE', '%' . $request->q . '%')
+                ->orWhere('xml', 'LIKE', '%' . $request->q . '%')
+                ->orWhere('slug', 'LIKE', '%' . $request->q . '%');
         }
 
         return view('laracms.shop::shop.index', [
@@ -91,7 +89,7 @@ class ShopController extends Controller
     {
         // TODO delete old logo
         if ($request->logo) {
-            $photoName = time().'.'.$request->logo->getClientOriginalExtension();
+            $photoName = time() . '.' . $request->logo->getClientOriginalExtension();
 
             /*
             talk the select file and move it public directory and make avatars
@@ -107,33 +105,34 @@ class ShopController extends Controller
 
         $shop->update([
             'shop_photo'    => isset($shopPhotoName) ? asset('shop_photos/' . $shopPhotoName) : $shop->shop_photo,
-            'logo' => isset($photoName) ? asset('logos/' . $photoName) : $shop->logo,
-            'xml' => $request->xml,
-            'name' => $request->name ?: $shop->name,
+            'logo'          => isset($photoName) ? asset('logos/' . $photoName) : $shop->logo,
+            'xml'           => $request->xml,
+            'name'          => $request->name ?: $shop->name,
             //'reg_number' => $request->reg_number,
-            'phone' => $request->phone,
-            'second_phone' => $request->second_phone,
+            'phone'         => $request->phone,
+            'second_phone'  => $request->second_phone,
             'manager_phone' => $request->manager_phone,
-            'email' => $request->email,
-            'second_email' => $request->second_email,
-            'address' => $request->address,
-            'slug' => $request->slug,
-            'sandbox' => $request->sandbox ? 1 : 0,
+            'email'         => $request->email,
+            'second_email'  => $request->second_email,
+            'address'       => $request->address,
+            'slug'          => $request->slug,
+            'sandbox'       => $request->sandbox ? 1 : 0,
             'lat'           => $request->lat,
             'lon'           => $request->lon,
+            'delivery_url'  => $request->delivery_url
         ]);
 
         if ($request->delivery) {
             $shop->deliveries()->delete();
             $deliveries = [];
-            foreach ($request->delivery as $delivery => $deliveryData)  {
+            foreach ($request->delivery as $delivery => $deliveryData) {
                 if (($deliveryData['price'] === null || $deliveryData['price'] == 0) && !$deliveryData['enabled']) {
                     continue;
                 }
                 $deliveries[] = [
                     'delivery' => $delivery,
                     'price'    => $deliveryData['price'] ? (string)$deliveryData['price'] : 0,
-                    'enabled'    => $deliveryData['enabled'],
+                    'enabled'  => $deliveryData['enabled'],
                     'shop_id'  => $shop->id
                 ];
             }
@@ -143,7 +142,7 @@ class ShopController extends Controller
         if ($request->payment) {
             $shop->payments()->delete();
             $data = [];
-            foreach ($request->payment as $payment => $value)  {
+            foreach ($request->payment as $payment => $value) {
                 $data[] = [
                     'payment' => $payment,
                     'shop_id' => $shop->id
@@ -216,13 +215,12 @@ class ShopController extends Controller
 
         if ($request->q) {
             $products = $products
-                ->where('name', 'LIKE', '%'. $request->q .'%')
-                ->orWhere('description', 'LIKE', '%'. $request->q .'%')
-                ->orWhere('category', 'LIKE', '%'. $request->q .'%')
-                ->orWhere('category_full', 'LIKE', '%'. $request->q .'%')
-                ->orWhere('manufacturer', 'LIKE', '%'. $request->q .'%')
-                ->orWhere('model', 'LIKE', '%'. $request->q .'%')
-            ;
+                ->where('name', 'LIKE', '%' . $request->q . '%')
+                ->orWhere('description', 'LIKE', '%' . $request->q . '%')
+                ->orWhere('category', 'LIKE', '%' . $request->q . '%')
+                ->orWhere('category_full', 'LIKE', '%' . $request->q . '%')
+                ->orWhere('manufacturer', 'LIKE', '%' . $request->q . '%')
+                ->orWhere('model', 'LIKE', '%' . $request->q . '%');
         }
 
         $products = $products->paginate(25);
